@@ -1,0 +1,79 @@
+---
+layout: default
+---
+<article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">
+      {% if page.entry.title %}{{ page.entry.title }}{% else %}{{ page.title }}{% endif %}
+    </h1>
+    <div class="post-authors text-muted">
+      {% if page.entry.author_raw %}
+        by {{ page.entry.author_raw | join: ", " }}
+      {% endif %}
+    </div>
+    <div class="post-venue text-muted font-italic mb-3">
+      {% assign venue = page.entry.venue | default: page.entry.booktitle | default: page.entry.journal %}
+      {% if venue %}
+        {{ venue }}, {{ page.entry.year }}
+      {% endif %}
+    </div>
+
+    <!-- Buttons -->
+    <div class="buttons mt-3 mb-4">
+      {% if page.link_pdf %}
+        <a class="btn btn-primary" href="{{ page.link_pdf }}" role="button" target="_blank" rel="noopener noreferrer">
+          <i class="fa-solid fa-file-pdf"></i> PDF
+        </a>
+      {% endif %}
+      {% if page.code %}
+        <a class="btn btn-primary" href="{{ page.code }}" role="button" target="_blank" rel="noopener noreferrer">
+          <i class="fa-brands fa-github"></i> Code
+        </a>
+      {% endif %}
+    </div>
+
+    <!-- Tags -->
+    {% if page.tags and page.tags.size > 0 %}
+      <div class="post-tags">
+        {% for tag in page.tags %}
+          <span class="badge badge-secondary">{{ tag }}</span>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </header>
+
+  <div class="post-content mt-4">
+    {{ content }}
+
+    {% if page.bibtex %}
+      <div class="bibtex-toggle">
+        <a href="#" class="bib-toggle-link">view bibtex</a>
+      </div>
+      <div class="bibtex-content" style="display: none;">
+        <pre><code>{{ page.bibtex }}</code></pre>
+      </div>
+    {% endif %}
+
+  </div>
+
+</article>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const toggleLink = document.querySelector('.bib-toggle-link');
+    if (toggleLink) {
+      toggleLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const bibContent = document.querySelector('.bibtex-content');
+        if (bibContent.style.display === 'none') {
+          bibContent.style.display = 'block';
+          toggleLink.textContent = 'hide bibtex';
+        } else {
+          bibContent.style.display = 'none';
+          toggleLink.textContent = 'view bibtex';
+        }
+      });
+    }
+  });
+</script> 
