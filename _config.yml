@@ -141,6 +141,10 @@ collections:
     defaults:
       layout: post
     output: true
+  notes:
+    output: true
+    defaults:
+      layout: note
 
 # -----------------------------------------------------------------------------
 # Jekyll settings
@@ -274,6 +278,13 @@ scholar:
   query: "@*"
   group_by: year
   group_order: descending
+
+  collections:
+    notes:
+      type: "bibtex"
+      style: "apa"
+      sort_by: "year, month"
+      order: "descending"
 
 # Display different badges withs stats for your publications
 # Customize badge behavior in _layouts/bib.liquid
