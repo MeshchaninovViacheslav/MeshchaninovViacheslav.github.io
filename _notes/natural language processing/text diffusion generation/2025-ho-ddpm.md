@@ -1,4 +1,5 @@
 ---
+layout: note
 title: Denoising Diffusion Probabilistic Models
 importance: 1
 date: 2020-12-01

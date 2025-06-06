@@ -19,6 +19,12 @@ layout: default
       {% endif %}
     </div>
 
+    {% if page.date %}
+      <p class="post-meta">
+        {{ page.date | date: '%B %-d, %Y' }}
+      </p>
+    {% endif %}
+
     <!-- Buttons -->
     <div class="buttons mt-3 mb-4">
       {% if page.link_pdf %}
@@ -76,4 +82,4 @@ layout: default
       });
     }
   });
-</script> 
+</script>
