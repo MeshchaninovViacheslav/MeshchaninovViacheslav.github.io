@@ -8,8 +8,6 @@ nav_order: 3
 horizontal: false
 ---
 
-<p class="post-meta">Total notes: {{ site.notes.size }}</p>
-
 <!-- pages/notes.md -->
 <div class="notes">
 {% assign notes_by_category = site.notes | group_by_exp: "item", "item.path | split: '/' | slice: 1, 1 | join: ''" %}
@@ -17,7 +15,7 @@ horizontal: false
   {% if category_group.name == "" or category_group.name == nil %}{% continue %}{% endif %}
   <div class="mt-5 pt-5">
     <a id="{{ category_group.name | slugify }}" href=".#{{ category_group.name | slugify }}">
-      <h2 class="category display-4 font-weight-bold text-capitalize border-bottom pb-3 mb-4" style="letter-spacing: 0.05em;">{{ category_group.name }}</h2>
+      <h2 class="category font-weight-bold text-capitalize" style="font-size: 1.875rem; padding-bottom: 0.25rem; border-bottom: 1px solid #E5E7EB; margin-bottom: 1rem;">{{ category_group.name }}</h2>
     </a>
   </div>
 
