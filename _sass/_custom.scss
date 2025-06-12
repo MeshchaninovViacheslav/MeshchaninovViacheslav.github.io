@@ -8,13 +8,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .topic-card-custom {
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  background-color: #f0f8ff; /* A light alice blue */
   border-width: 1px;
   border-color: #ced4da; /* A slightly darker gray to be visible on white */
 }
 
 .topic-card-custom:hover {
-  transform: translateY(-0.25rem);
+  transform: translateY(-5px);
+  background-color: #e6f2ff; /* A slightly darker blue on hover */
   box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important; /* shadow-lg */
   border-top-color: #6366F1 !important; /* Indigo 500 */
   border-top-width: 4px;
