@@ -50,6 +50,11 @@ layout: default
   </header>
 
   <div class="post-content mt-4">
+    <div id="toc-container" class="toc-frame p-3 mb-4 rounded" style="background-color: #f8f9fa; display: none;">
+      <h4 class="toc-title">On this page</h4>
+      <ul id="toc-list" class="nav"></ul>
+    </div>
+
     {{ content }}
 
     {% if page.bibtex %}
@@ -79,6 +84,40 @@ layout: default
           bibContent.style.display = 'none';
           toggleLink.textContent = 'view bibtex';
         }
+      });
+    }
+  });
+</script>
+
+<script>
+  // Simple, robust Table of Contents generator
+  document.addEventListener('DOMContentLoaded', function() {
+    const content = document.querySelector('.post-content');
+    const headers = content.querySelectorAll('h2, h3, h4, h5, h6');
+    const tocList = document.getElementById('toc-list');
+    const tocContainer = document.getElementById('toc-container');
+
+    if (headers.length > 1) {
+      tocContainer.style.display = 'block';
+      headers.forEach(function(header) {
+        if (!header.id) {
+          // Skip headers without an ID, which kramdown should provide
+          return;
+        }
+
+        const level = parseInt(header.tagName.substring(1), 10);
+        const listItem = document.createElement('li');
+        listItem.className = 'nav-item';
+
+        const link = document.createElement('a');
+        link.className = 'nav-link';
+        link.href = '#' + header.id;
+        link.textContent = header.textContent;
+        // Indent based on header level
+        link.style.paddingLeft = (level - 1) * 1 + 'rem';
+
+        listItem.appendChild(link);
+        tocList.appendChild(listItem);
       });
     }
   });

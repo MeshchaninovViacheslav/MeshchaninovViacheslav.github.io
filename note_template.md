@@ -1,7 +1,10 @@
 ---
-# This is the front matter. For a new note, you only need to provide
-# the BibTeX entry and an importance value. The rest is parsed automatically.
-importance: 1
+layout: note
+title: Denoising Diffusion Probabilistic Models
+date: 2020-12-01
+tags: [diffusion, generative, denoising]
+link_pdf: "https://proceedings.neurips.cc/paper/2020/file/4c5bcfec8584af0d967f1ab10179ca4b-Paper.pdf"
+code: "https://github.com/hojasonho/diffusion"
 
 bibtex: |-
   @article{key,
@@ -12,13 +15,6 @@ bibtex: |-
     pages     = {1--10},
     year      = {2024}
   }
-
-# You can still add other optional front matter keys if needed.
-# For example, to link to a PDF or code repository:
-link_pdf: "https://arxiv.org/pdf/xxxx.xxxxx.pdf"
-code: "https://github.com/author/repo"
-date: 2025-06-05
-tags: [diffusion, generative, denoising]
 ---
 
 # Note content starts here
