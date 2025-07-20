@@ -205,10 +205,8 @@ plugins:
   - jekyll-regex-replace
   - jekyll/scholar
   - jekyll-sitemap
-  - jekyll-tabs
   - jekyll-terser
   - jekyll-twitter-plugin
-  - jekyll-toc
   - jemoji
 
 # Sitemap settings
