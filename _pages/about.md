@@ -35,7 +35,6 @@ Link to your social media connections, too. This theme is set up to use [Font Aw
 
 Hello, I'm a PhD student in computer science at Constructor University, Bremen, where my research is focused on generative and diffusion models for discrete data such as proteins and text.
 
-My journey in this field began at Lomonosov Moscow State University, where I received my Bachelor's and Master's degrees in computer science in 2024. 
-<!-- To further specialize my skills, I also completed the Machine Learning Developer program at the Yandex School of Data Analysis. -->
+I completed my Bachelor's and Master's degrees in computer science at Lomonosov Moscow State University in 2024.
 
 Here, I share my professional notes and personal insights from my ongoing research. My hope is that they will be a valuable resource for other researchers and enthusiasts in the field.

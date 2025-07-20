@@ -2,7 +2,7 @@
 layout: page
 title: notes
 permalink: /notes/
-description: A growing collection of your cool notes.
+description: A growing collection of my cool notes.
 nav: true
 nav_order: 3
 horizontal: false
