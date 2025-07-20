@@ -18,5 +18,5 @@ bibtex: |-
 ---
 
 ## Methodology
----
 
+---

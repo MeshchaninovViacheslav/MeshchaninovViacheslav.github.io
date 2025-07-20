@@ -17,6 +17,7 @@ bibtex: |-
 ---
 
 ## Receipt of GENIE
+
 ---
 
 1. Represent protein as a sequence of $C_{\alpha}$ atomic coordinates.
@@ -59,4 +60,3 @@ $$
 $$
 
 $F_i$ is a discrete FS frame.
-

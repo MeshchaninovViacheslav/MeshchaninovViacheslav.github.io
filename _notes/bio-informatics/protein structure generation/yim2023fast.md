@@ -17,12 +17,11 @@ bibtex: |-
 ---
 
 ## Reciept of FrameFlow
+
 ---
 
-1. 
-
+1.
 
 ## Methodology
+
 ---
-
-

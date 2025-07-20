@@ -17,12 +17,15 @@ bibtex: |-
 ---
 
 ## Motivation
+
 ---
 
 In essence, the motivation is to create one-step image generators that can achieve quality comparable to costly multi-step diffusion models while being orders of magnitude faster. DMD achieves this by introducing a distribution matching objective, bolstered by a regression loss, to efficiently distill knowledge from powerful diffusion models. The method aims to close the fidelity gap between distilled and base models while enabling 100x reduction in neural network evaluations and generating 512x512 images at 20 FPS.
 
 ## Methodology
+
 ---
+
 ![folding]({{ "assets/notes-img/computer vision/diffusion distillation/yin2024one/12.png" | relative_url }}){:width="800px" .img-frame-black}
 
 > Notation
@@ -35,7 +38,7 @@ In essence, the motivation is to create one-step image generators that can achie
 
 ### Distribution Matching Loss
 
-Ideally, a fast generator should produce samples that are indistinguishable from real images. 
+Ideally, a fast generator should produce samples that are indistinguishable from real images.
 To achieve this, the authors minimize the Kullback–Leibler (KL) divergence between the real and fake image distributions, $p_{\text{real}}$ and $p_{\text{fake}}$, respectively:
 
 $$D_{KL}(p_{\text{fake}} \parallel p_{\text{real}}) = \mathbb{E}_{z \sim \mathcal{N}(0, I),\; x = G_{\theta}(z)} \left[ \log p_{\text{fake}}(x) - \log p_{\text{real}}(x) \right]$$
@@ -47,12 +50,13 @@ $$\nabla_\theta D_{KL} = \mathbb{E}_{\substack{z \sim \mathcal{N}(0, I) \\ x = G
 $\text{where } s_{\text{real}}(x) = \nabla_x \log p_{\text{real}}(x), \quad s_{\text{fake}}(x) = \nabla_x \log p_{\text{fake}}(x)$.
 Since the expectation is taken only over the normal distribution, the expression under the expectation is differentiated.
 
-Computing this gradient is still challenging for two reasons: 
-- first, the scores diverge for samples with low probability — in particular $p_{\text{real}}$ vanishes for fake samples, 
-- second, the intended tool for estimating score, namely the diffusion models, only provide scores of the diffused distribution. 
+Computing this gradient is still challenging for two reasons:
+
+- first, the scores diverge for samples with low probability — in particular $p_{\text{real}}$ vanishes for fake samples,
+- second, the intended tool for estimating score, namely the diffusion models, only provide scores of the diffused distribution.
 
 So, the proposed strategy is to calculate a noisy score instead of a clean one.
-The scores $s_{\text{real}}(x_t, t)$ and $s_{\text{fake}}(x_t, t)$ are defined accordingly. 
+The scores $s_{\text{real}}(x_t, t)$ and $s_{\text{fake}}(x_t, t)$ are defined accordingly.
 
 Diffused sample $x_t \sim q(x_t \mid x)$ is obtained by adding noise to generator output $x = G_\theta(z)$ at diffusion time step $t$: $q_t(x_t \mid x) \sim \mathcal{N}(\alpha_t x,\, \sigma_t^2 \mathbf{I})$.
 
@@ -62,7 +66,7 @@ The real score is modeled using pretrained diffusion model: $s_{\text{real}}(x_t
 
 The fake score function is derived in the same manner as the real score case: $s_{\text{fake}}(x_t, t) = - \frac{x_t - \alpha_t \mu^{\phi}_{\text{fake}}(x_t, t)}{\sigma_t^2}$.
 
-However, as the distribution of the generated samples changes throughout training, the fake diffusion model $\mu^{\phi}_{\text{fake}}$ is dynamically adjusted to track these changes. 
+However, as the distribution of the generated samples changes throughout training, the fake diffusion model $\mu^{\phi}_{\text{fake}}$ is dynamically adjusted to track these changes.
 
 The authors initialize the fake diffusion model from the pretrained diffusion model $\mu_{\text{base}}$, updating parameters $\phi$ during training, by minimizing a standard denoising objective:
 $$\mathcal{L}^{\phi}_{\text{denoise}} = ||\mu^{\phi}_{\text{fake}}(x_t, t) - x_0||_2^2$$
@@ -75,7 +79,7 @@ $$\nabla_{\theta} D_{KL} \simeq \mathbb{E}_{z, t, x, x_t} \left[ w_t \alpha_t \l
 
 where $z \sim \mathcal{N}(0; \mathbf{I})$, $x = G_{\theta}(z)$, $t \sim \mathcal{U}(T_{\min}, T_{\max})$, and $x_t \sim q_t(x_t \mid x)$.
 
-Here, $w_t$ is a time-dependent scalar weight added to improve the training dynamics. 
+Here, $w_t$ is a time-dependent scalar weight added to improve the training dynamics.
 The weighting factor is designed to normalize the gradient's magnitude across different noise levels.
 Specifically, the mean absolute error is computed across spatial and channel dimensions between the denoised image and the input, setting:
 
@@ -97,8 +101,8 @@ $\nabla_{\theta} L = 2 \cdot (s_{\text{fake}}(x_t, t) - s_{\text{real}}(x_t, t))
 
 > Regression loss
 
-The distribution matching objective is well-defined for $t \gg 0$, i.e., when the generated samples are corrupted with a large amount of noise. 
-However, for a small amount of noise, $s_{\text{real}}(x_t, t)$ often becomes unreliable, as $p_{\text{real}}(x_t, t)$ goes to zero. 
+The distribution matching objective is well-defined for $t \gg 0$, i.e., when the generated samples are corrupted with a large amount of noise.
+However, for a small amount of noise, $s_{\text{real}}(x_t, t)$ often becomes unreliable, as $p_{\text{real}}(x_t, t)$ goes to zero.
 Furthermore the optimization is susceptible to mode collapse, where the fake distribution assigns higher overall density to a subset of the modes.
 To avoid this, an additional regression loss is used to ensure all modes are preserved.
 
@@ -109,7 +113,7 @@ Learned Perceptual Image Patch Similarity (LPIPS) is used as the distance functi
 
 > Final objective
 
-Network $\mu_{\text{fake}}^{\phi}$ is trained with $$\mathcal{L}^{\phi}_{\text{denoise}}$$, which is used to help calculate $\nabla_{\theta} D_{KL}$. 
+Network $\mu_{\text{fake}}^{\phi}$ is trained with $$\mathcal{L}^{\phi}_{\text{denoise}}$$, which is used to help calculate $\nabla_{\theta} D_{KL}$.
 For training $G_\theta$, the final objective is:
 $$D_{KL} + \lambda_{\text{reg}} \mathcal{L}_{\text{reg}}, \quad \text{with} \quad \lambda_{\text{reg}} = 0.25$$ unless otherwise specified.
 
@@ -119,7 +123,7 @@ $$
 \begin{align}
     & z \sim \mathcal{N}(0; \mathbf{I}) \\
     & \varepsilon_{\theta} = G(z, t_{\text{gen}}), t_{\text{gen}} \text{ is a timestep that we feed into a generator} \\
-    & x_{\theta} = \frac{z - \sigma_{t_{\text{gen}}} \varepsilon_{\theta} }{\alpha_{t_{\text{gen}}}} \\ 
+    & x_{\theta} = \frac{z - \sigma_{t_{\text{gen}}} \varepsilon_{\theta} }{\alpha_{t_{\text{gen}}}} \\
     & S_{\text{fake}}\text{.requires_grad_(False)} \\
     & \\
     & \text{with torch.no_grad():} \\
@@ -136,5 +140,3 @@ $$
     & L_{\text{dmd}} = 0.5 \cdot \bigg(x_{\theta} - (x_{\theta} - \text{grad})\text{.detach()} \bigg)^2 \\
 \end{align}
 $$
-
-

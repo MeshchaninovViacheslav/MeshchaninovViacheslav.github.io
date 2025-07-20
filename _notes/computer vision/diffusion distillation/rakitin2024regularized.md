@@ -18,10 +18,11 @@ bibtex: |-
 ---
 
 ## Unpaired I2I and optimal transport
+
 ---
 
-The problem of unpaired I2I consists of learning a mapping $G$ between the source distribution $p^{\mathcal{S}}$ and the target distribution $p^{\mathcal{T}}$ given the corresponding independent data sets of samples. 
-When optimized, the mapping should appropriately adapt $G(x)$ to the target distribution $p^{\mathcal{T}}$, while preserving the input’s cross-domain features. 
+The problem of unpaired I2I consists of learning a mapping $G$ between the source distribution $p^{\mathcal{S}}$ and the target distribution $p^{\mathcal{T}}$ given the corresponding independent data sets of samples.
+When optimized, the mapping should appropriately adapt $G(x)$ to the target distribution $p^{\mathcal{T}}$, while preserving the input’s cross-domain features.
 However, at first glance, it is unclear what the preservation of cross-domain properties should look like.
 
 <br>
@@ -35,10 +36,11 @@ $$\inf_G \left\{ \mathbb{E}_{p^{\mathcal{S}}(x)} C(x, G(x)) \mid G(x) \sim p^{\m
 which can be seen as a mathematical formalization of the I2I task.
 
 ## Methodology
+
 ---
 
-Our goal is to obtain a generator that maps objects from one distribution to objects of another distribution. 
-The main difference from DMD is that now, instead of generating from a Gaussian distribution, we generate objects from another specified distribution $p^{\mathcal{S}}$. 
+Our goal is to obtain a generator that maps objects from one distribution to objects of another distribution.
+The main difference from DMD is that now, instead of generating from a Gaussian distribution, we generate objects from another specified distribution $p^{\mathcal{S}}$.
 Therefore, the setup of DMD does not change significantly:
 
 $$\nabla_\theta \mathcal{L}_{\text{DMD}}(\theta) = \nabla_\theta D_{KL} = \mathbb{E}_{\substack{z \sim p^{\mathcal{S}} \\ x = G_\theta(z)}} \left[ -\left(s_{\text{real}}(F(x, t)) - s_{\text{fake}}(F(x, t))\right) \frac{dG}{d\theta} \right]$$
@@ -46,6 +48,3 @@ $$\nabla_\theta \mathcal{L}_{\text{DMD}}(\theta) = \nabla_\theta D_{KL} = \mathb
 However, there are no guarantees that the input an bd the output will be related. Similarly to the OT problem, we fix the issue by penalizing the transport cost between them. We obtain the following objective:
 
 $$\mathcal{L}(\theta) = \mathcal{L}_{\text{DMD}}(\theta) + \lambda \mathbb{E}_{p^{\mathcal{S}}} C(x, G_{\theta}(x))$$
-
-
-

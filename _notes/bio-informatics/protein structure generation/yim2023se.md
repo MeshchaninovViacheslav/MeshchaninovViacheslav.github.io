@@ -17,21 +17,22 @@ bibtex: |-
 ---
 
 ## Reciept of FrameDiff
+
 ---
 
 1. Train two flow diffusion model: Riemannian diffusion for residue rotation matrices and Gaussian diffusion for residue translations.
 2. Use best practices from AlphaFold2.
 
-
 ## Methodology
+
 ---
 
 ![folding]({{ "assets/notes-img/bio-informatics/protein structure generation/yim2023se/20.png" | relative_url }}){:width="800px" .img-frame-black}
 
-The authors use the same parameterization as in 
-[AlphaFold2]({% link _notes/bio-informatics/protein generation/jumper2021highly.md %}) 
-and 
-[RFDiffusion]({% link _notes/bio-informatics/protein structure generation/watson2023novo.md %}). 
+The authors use the same parameterization as in
+[AlphaFold2]({% link _notes/bio-informatics/protein generation/jumper2021highly.md %})
+and
+[RFDiffusion]({% link _notes/bio-informatics/protein structure generation/watson2023novo.md %}).
 The protein is represented as a sequence of residue rotation and translation.
 
 <br>

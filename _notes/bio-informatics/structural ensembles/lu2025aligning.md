@@ -16,7 +16,9 @@ bibtex: |-
 ---
 
 ## Motivation
+
 ---
+
 > Crucial Role of Protein Dynamics
 
 Understanding protein dynamics is a critical and complex challenge in studying protein functionality and regulation. Protein structures constantly transition between various conformational states across different spatial and temporal scales, which directly influences their biological functions.
@@ -24,11 +26,12 @@ Understanding protein dynamics is a critical and complex challenge in studying p
 > Limitations of traditional approaches
 
 1. Traditionally, molecular dynamics (MD) simulations have been the primary computational tool for investigating the dynamic behavior of biological molecules. These simulations model the system of particles by evolving Newtonian equations of motion, with accelerations determined by predefined force fields (physical energy functions).
-However, MD simulations are computationally prohibitive for capturing biologically relevant transitions, such as protein folding or unfolding, which often occur over micro- to millisecond timescales. Such simulations can require hundreds to thousands of GPU days depending on the system size.
+   However, MD simulations are computationally prohibitive for capturing biologically relevant transitions, such as protein folding or unfolding, which often occur over micro- to millisecond timescales. Such simulations can require hundreds to thousands of GPU days depending on the system size.
 
 2. While these data-driven approaches can generate structurally valid candidates, a significant challenge is that they do not explicitly model thermodynamic properties. A more accurate formulation of this problem is equilibrium sampling, which aims to sample conformation ensembles from the Boltzmann distribution over states. This is vital for accurately modeling protein ensembles and capturing their thermodynamic stability. However, this remains highly intractable because it requires generative models to not only produce plausible structures but also to match the underlying energy landscape
 
 ## Methodology
+
 ---
 
 > Notation
@@ -36,4 +39,3 @@ However, MD simulations are computationally prohibitive for capturing biological
 Amino acid sequence with length $L$: $$ {\bf c} = (c_1, c_2, \ldots, c_L) \in \mathcal{V}^L$$ where $$\mathcal{V}$$ denotes the vocabulary of 20 standard amino acids.
 
 Structure is described by the 3D positions of its constituent atoms: $$ { \bf x} = (x_1, x_2, \ldots, x_N) \in \mathbb{R}^{N \times 3}$$
-

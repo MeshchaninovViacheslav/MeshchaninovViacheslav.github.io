@@ -1,6 +1,10 @@
 <header>
   <!-- Nav Bar -->
-  <nav id="navbar" class="navbar navbar-light navbar-expand-sm {% if site.navbar_fixed %}fixed-top{% else %}sticky-top{% endif %} py-3 py-md-4" role="navigation">
+  <nav
+    id="navbar"
+    class="navbar navbar-light navbar-expand-sm {% if site.navbar_fixed %}fixed-top{% else %}sticky-top{% endif %} py-3 py-md-4"
+    role="navigation"
+  >
     <div class="container">
       {% if page.permalink != '/' %}
         <a class="navbar-brand title font-weight-bold" href="{{ site.baseurl }}/" style="font-size: 1.125rem; letter-spacing: -0.025em;">
@@ -48,7 +52,10 @@
 
           <!-- About -->
           <li class="nav-item {% if page.permalink == '/' %}active{% endif %}">
-            <a class="nav-link text-sm font-weight-medium ml-md-4 {% if page.permalink == '/' %}text-primary{% endif %}" href="{{ '/' | relative_url }}">
+            <a
+              class="nav-link text-sm font-weight-medium ml-md-4 {% if page.permalink == '/' %}text-primary{% endif %}"
+              href="{{ '/' | relative_url }}"
+            >
               {{- about_title }}
               {% if page.permalink == '/' %}
                 <span class="sr-only">(current)</span>
@@ -107,7 +114,10 @@
                   {%- else -%}
                     {%- assign url = p.url -%}
                   {%- endif %}
-                  <a class="nav-link text-sm font-weight-medium ml-md-4 {% if page.url contains parent_link %}text-primary{% endif %}" href="{{ url | relative_url }}">
+                  <a
+                    class="nav-link text-sm font-weight-medium ml-md-4 {% if page.url contains parent_link %}text-primary{% endif %}"
+                    href="{{ url | relative_url }}"
+                  >
                     {{- p.title }}
                     {% if page.url contains p.url %}
                       <span class="sr-only">(current)</span>

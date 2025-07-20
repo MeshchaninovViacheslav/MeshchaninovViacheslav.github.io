@@ -21,6 +21,7 @@ bibtex: |-
 ---
 
 ## Receipt of RFDiffusion
+
 ---
 
 1. Pre-train the model on the task of generating protein structures from sequences.
@@ -28,6 +29,7 @@ bibtex: |-
 3. Use self-conditioning for better generation.
 
 ## RoseTTAFold Modifications
+
 ---
 
 ### Architecture
@@ -36,14 +38,13 @@ bibtex: |-
 
 RFDiffusion has repurposed RoseTTAFold as the neural network in a diffusion model of protein backbones.
 
-
 ## RFDiffusion Methodology
+
 ---
 
 RF adopts a rigid-frame representation of the residues that comprise protein backbones. The structure of an $L$ residue backbone is described as a collection of residue frames
 $ x = [x_1, \dots, x_L]$,
 where each $x_l = (r_l, z_l)$ describes the translation $z_l \in \mathbb{R}^3$ and rigid rotation $r_l$ of the $l^{\text{th}}$ residue.
-
 
 ### Diffusion Process
 
@@ -51,7 +52,6 @@ The reverse process transitions are modeled as conditionally independent across 
 
 <br>
 The entire generation process can be divided into two independent components: a Gaussian transition for the translational component and an update for the rotational component. Since rotation matrices belong to the group SO(3), the generation is carried out as follows: at each step, we project r_t onto the tangent plane, take a step in the direction of the score, and then map the resulting point back to the SO(3) space.
-
 
 #### Residue translations
 
@@ -65,24 +65,27 @@ Our aim in this section is to define the process of rotation corruption in order
 
 For the forward and reverse transitions on rotations, we adapt a generalization developed by De Bortoli et al. of diffusion models to Riemannian manifolds.
 
-
 > Forward process defined by Brownian motion on SO(3)
 
-Define an inner-product on the associated tangent spaces $\tau_r$. For any $r \in$ SO(3) and $A, B \in \tau_r$: 
+Define an inner-product on the associated tangent spaces $\tau_r$. For any $r \in$ SO(3) and $A, B \in \tau_r$:
 
-$$ \langle A, B \rangle_{SO(3)} = \mathrm{Trace}(A^\top B)/2$$
+$$ \langle A, B \rangle\_{SO(3)} = \mathrm{Trace}(A^\top B)/2$$
 
 The marginal distribution of a rotation matrix $r^(t)$ evolving according to Brownian motion for time $t$ from an initial rotation $r^(0)$ is given by the isotropic gaussian distribution $\mathcal{IG}_{\text{SO(3)}}$:
 
 $$r^{(t)} \sim \mathcal{IG}_{SO(3)}\left( \mu = r^{(0)}, \, \sigma^2 = t \right)$$
 
-$$\mathcal{IG}_{SO(3)}(r^{(t)}; \mu, \sigma^2)
-= f\big(\omega(\mu^\top r^{(t)}); \sigma^2\big),$$
+$$
+\mathcal{IG}_{SO(3)}(r^{(t)}; \mu, \sigma^2)
+= f\big(\omega(\mu^\top r^{(t)}); \sigma^2\big),
+$$
 
-$$f(\omega; \sigma^2) = \sum_{l=0}^{\infty} (2l + 1) e^{-l(l+1)\sigma^2 / 2}
-\frac{\sin\big((l + \tfrac{1}{2}) \omega\big)}{\sin(\omega / 2)}$$
+$$
+f(\omega; \sigma^2) = \sum_{l=0}^{\infty} (2l + 1) e^{-l(l+1)\sigma^2 / 2}
+\frac{\sin\big((l + \tfrac{1}{2}) \omega\big)}{\sin(\omega / 2)}
+$$
 
-where $\mu$ is a $3 \times 3$ mean rotation matrix and $\omega(r)$ denotes the angle of rotation in radians associated with a rotation $r$. 
+where $\mu$ is a $3 \times 3$ mean rotation matrix and $\omega(r)$ denotes the angle of rotation in radians associated with a rotation $r$.
 The angle may be computed as
 $$\omega(r) = \arccos\left( \frac{\mathrm{trace}(R) - 1}{2} \right)$$.
 
@@ -92,7 +95,7 @@ To approximate the reverse transitions for the rotations we take inspiration fro
 
 In particular, reverse step updates for rotations are computed by taking a noisy step in the tangent space of SO(3) in the direction of the gradient of the log density of a noised structure $x(t)$ with respect to each rotation, and projecting back to the SO(3) manifold using the exponential map.
 
-The tangent space of SO(3) is $$ \mathfrak{so}(3) = \bigl\{ A \in \text{Mat}_{3 \times 3}(\mathbb{R}) \mid  A^{\top} = -A \bigl\}$$ at point $I_3$ (identity rotation).
+The tangent space of SO(3) is $$ \mathfrak{so}(3) = \bigl\{ A \in \text{Mat}\_{3 \times 3}(\mathbb{R}) \mid A^{\top} = -A \bigl\}$$ at point $I_3$ (identity rotation).
 
 $$\mathfrak{so}(3)$$ has orthonormal basis:
 
@@ -127,12 +130,13 @@ r^{(t-1)} = \exp_{r^{(t)}} \bigl\{ (\sigma_t^2 - \sigma_{t-1}^2)\nabla_{r^{(t)}}
 \end{equation}
 $$
 
-where 
+where
+
 - $\nabla_{r^{(t)}} \log q(x^{(t)})$ in $$\mathcal{T}_{r^{(t)}}$$ denotes the Stein score of the forward process at time $t$,
 
 - $\exp_{r^{(t)}}$ denotes the exponential map from $$\mathcal{T}_{r^{(t)}}$$ to $SO(3)$, (reverse mapping from tangent space to $SO(3)$). The exponential map $\exp_{r^{(t)}}$ may be computed as $\exp_{r^{(t)}}\{v\} = r^{(t)} \exp_{I_3}\{r^{(t)\top}v\}$, where $\exp_{I_3}$ is the matrix exponential.
 
-- $\epsilon_1, \epsilon_2, \epsilon_3 \overset{iid}{\sim} \mathcal{N}(0, 1)$. 
+- $\epsilon_1, \epsilon_2, \epsilon_3 \overset{iid}{\sim} \mathcal{N}(0, 1)$.
 
 <br>
 The variance schedule for the rotations is chosen by setting
@@ -148,7 +152,7 @@ For a given $t$ and $r^{(t)}$:
 
 $$
 \begin{align*}
-\nabla_{r^{(t)}} \log q(x^{(t)}) 
+\nabla_{r^{(t)}} \log q(x^{(t)})
 &= \mathbb{E}_q \nabla_{r^{(t)}} \log \frac{q(x^{(t)} \mid x^{(0)}) \cdot q(x^{(0)})}{q(x^{(0)} \mid x^{(t)})} \\
 &= \mathbb{E}_q \left[ \nabla_{r^{(t)}} \log q(x^{(t)} \mid x^{(0)}) - \nabla_{r^{(t)}} \log q(x^{(0)} \mid x^{(t)}) \right] \\
 &= \mathbb{E}_q \left[ \nabla_{r^{(t)}} \log q(x^{(t)} \mid x^{(0)}) \right] - \mathbb{E} \left[ \nabla_{r^{(t)}} q(x^{(0)} \mid x^{(t)}) \right] \\
@@ -204,24 +208,24 @@ $$
 
 <br>
 
-$$\mathcal{L}_{\text{Frame}}$$ includes contributions from $d_{\text{Frame}}(x^{(0)}, \hat{x}^{(0)})$ computed at each intermediate model's block with an exponential weighting, $\gamma$,  that places greater importance on later outputs:
+$$\mathcal{L}_{\text{Frame}}$$ includes contributions from $d_{\text{Frame}}(x^{(0)}, \hat{x}^{(0)})$ computed at each intermediate model's block with an exponential weighting, $\gamma$, that places greater importance on later outputs:
 
 $$
-\mathcal{L}_{\text{Frame}} = 
-\frac{1}{\sum_{i=0}^{I-1} \gamma^i} 
-\sum_{i=1}^{I} \gamma^{I-i} 
+\mathcal{L}_{\text{Frame}} =
+\frac{1}{\sum_{i=0}^{I-1} \gamma^i}
+\sum_{i=1}^{I} \gamma^{I-i}
 d_{\text{Frame}}(x^{(0)}, \hat{x}^{(0),i})^2
 $$
 
 where $\hat{x}^{(0),i}$ is the $i^{\text{th}}$ structure block output.
 
-For the second term in the loss, $$\mathcal{L}_{2}$$, the model outputs multimodal distributions of expected distances, dihedral angles, and planar angles between all pairs of contacting residues. 
-$D_{:,l,l'},\ \Omega_{:,l,l'},\ \Phi_{:,l,l'},\ \Theta_{:,l,l'}$ together describe the orientation of residue $l$ relative to residue $l'$. 
+For the second term in the loss, $$\mathcal{L}_{2}$$, the model outputs multimodal distributions of expected distances, dihedral angles, and planar angles between all pairs of contacting residues.
+$D_{:,l,l'},\ \Omega_{:,l,l'},\ \Phi_{:,l,l'},\ \Theta_{:,l,l'}$ together describe the orientation of residue $l$ relative to residue $l'$.
 The following loss consists of the cross entropy between the one-hot histogram of the known inter-residue distances and orientations and the corresponding distributions predicted by the model.
 
 $$
 \begin{align*}
-\mathcal{L}_{\text{2D}}(\text{logits}_d, \text{logits}_\omega, \text{logits}_\theta, \text{logits}_\phi, z_0) = 
+\mathcal{L}_{\text{2D}}(\text{logits}_d, \text{logits}_\omega, \text{logits}_\theta, \text{logits}_\phi, z_0) =
 & \text{CrossEntropy}(\text{logits}_{\text{dist}}, D) + \\
 & \text{CrossEntropy}(\text{logits}_\omega, \Omega) + \\
 & \text{CrossEntropy}(\text{logits}_\theta, \Theta) + \\
@@ -232,4 +236,3 @@ $$
 #### Hyperparameters
 
 ![folding]({{ "assets/notes-img/bio-informatics/protein structure generation/watson2023novo/17.png" | relative_url }}){:width="800px" .img-frame-black}
-

@@ -24,7 +24,7 @@ bibtex: |-
 > Removing the regression loss: true distribution matching and easier large-scale training
 
 The regression loss used in DMD ensures mode coverage and training stability, but it makes large-scale distillation cumbersome, and is at odds with the
-distribution matching idea, thus inherently limiting the performance of the distilled generator to that of the teacher model. 
+distribution matching idea, thus inherently limiting the performance of the distilled generator to that of the teacher model.
 The first improvement presented in this work is to remove this loss.
 
 > Stabilizing pure distribution matching with a Two Time-scale Update Rule
@@ -38,8 +38,8 @@ The authors find that using 5 fake score updates per generator update, without t
 > Surpassing the teacher model using a GAN loss and real data
 
 The model so far achieves comparable training stability and performance to DMD.
-However, a performance gap remains between the distilled generator and the teacher diffusion model. 
-The authors hypothesize this gap could be attributed to approximation errors in the real score function used in DMD. 
+However, a performance gap remains between the distilled generator and the teacher diffusion model.
+The authors hypothesize this gap could be attributed to approximation errors in the real score function used in DMD.
 Since DMD's distilled model is never trained with real data, it cannot recover from these errors.
 
 <br>
@@ -58,13 +58,14 @@ The generator $G$ minimizes this objective.
 The authors noticed that it is still hard to model highly diverse and detailed images using a one-step generator.
 This motivated them to extend DMD to support multi-step sampling.
 
-- A predetermined schedule with $N$ timesteps $\{t_1, t_2, \ldots, t_N\}$ is fixed, identical during training and inference. 
+- A predetermined schedule with $N$ timesteps $\{t_1, t_2, \ldots, t_N\}$ is fixed, identical during training and inference.
 
 - During inference, at each step, denoising and noise injection steps are alternated, like in consistency models, to improve sample quality.
-Specifically, starting from Gaussian noise $z_0 \sim \mathcal{N}(0, \mathbf{I})$, the process alternates between 
+  Specifically, starting from Gaussian noise $z_0 \sim \mathcal{N}(0, \mathbf{I})$, the process alternates between
+
 1. **denoising** updates $$\hat{x}_{t_i} = G_{\theta}(x_{t_i}, t_i)$$
-2. and **forward diffusion** steps $$x_{t_{i+1}} = \alpha_{t_{i+1}} \hat{x}_{t_i} + \sigma_{t_{i+1}} \epsilon, \quad \epsilon \sim \mathcal{N}(0, \mathbf{I})$$, 
-until the final image $\hat{x}_{t_N}$ is obtained.
+2. and **forward diffusion** steps $$x_{t_{i+1}} = \alpha_{t_{i+1}} \hat{x}_{t_i} + \sigma_{t_{i+1}} \epsilon, \quad \epsilon \sim \mathcal{N}(0, \mathbf{I})$$,
+   until the final image $\hat{x}_{t_N}$ is obtained.
 
 - The 4-step model uses the following schedule: 999, 749, 499, 249, for a teacher model trained with 1000 steps.
 
@@ -78,9 +79,8 @@ The authors address this issue by replacing the noisy real images during trainin
 This is tractable because, unlike the teacher diffusion model, the proposed generator only runs for a few steps.
 The generator then denoises these simulated images and their outputs are supervised with the proposed loss functions.
 
-
 > Putting everything together
 
 Starting from a pretrained diffusion model, the authors alternate between optimizing the generator to minimize the original distribution matching objective as well as a GAN objective,
-and optimizing the fake score estimator using both a denoising score matching objective on the fake data, and the GAN classification loss (discriminator task). 
+and optimizing the fake score estimator using both a denoising score matching objective on the fake data, and the GAN classification loss (discriminator task).
 To ensure the fake score estimate is accurate and stable, despite being optimized on-line, the authors update it with higher frequency than the generator (5 steps vs. 1).

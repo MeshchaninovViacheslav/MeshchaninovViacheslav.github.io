@@ -20,6 +20,7 @@ bibtex: |-
 ---
 
 ## Technical Details
+
 ---
 
 ![folding]({{ "assets/notes-img/bio-informatics/protein generation/abramson2024accurate/10.png" | relative_url }}){:width="800px" .img-frame-black}
@@ -27,13 +28,11 @@ bibtex: |-
 ### Pairformer
 
 What it is: a streamlined successor to the Evoformer. It iterates attention and triangular updates over the single and pair features but no longer keeps an MSA axis.
-Why 48 blocks? Empirically, this depth was the sweet spot in AF2 for capturing long‑range geometry; AF3 preserves it but spends the saved MSA FLOPs on more tokens (all atoms, ligands, nucleic acids). 
-
+Why 48 blocks? Empirically, this depth was the sweet spot in AF2 for capturing long‑range geometry; AF3 preserves it but spends the saved MSA FLOPs on more tokens (all atoms, ligands, nucleic acids).
 
 ### Recycling loop
 
 As in AlphaFold 2 recycling loop is applied during training (with stop gradient) and inference. Typically four recycles are used.
-
 
 ### Diffusion model
 
@@ -41,7 +40,7 @@ As in AlphaFold 2 recycling loop is applied during training (with stop gradient)
 
 > Augmentation
 
-To improve training efficiency the authors train the Diffusion Module with a larger batch size than the trunk. 
+To improve training efficiency the authors train the Diffusion Module with a larger batch size than the trunk.
 To realise this, they run the trunk once and then create 48 versions of the input structure by randomly rotating
 and translating according to Algorithm 19 and adding independent noise to each structure.
 
@@ -57,7 +56,7 @@ P_mean = -1.2,         # mean of log-normal distribution from which noise is dra
 P_std = 1.5,           # standard deviation of log-normal distribution from which noise is drawn for training
 sigma_min = 0.002,     # min noise level
 sigma_max = 80,        # max noise level
-sigma_data = 0.5,      # standard deviation of data distribution        
+sigma_data = 0.5,      # standard deviation of data distribution
 
 def noise_distribution(self, batch_size):
     return (self.P_mean + self.P_std * torch.randn((batch_size,), device = self.device)).exp() * self.sigma_data
@@ -72,8 +71,7 @@ noised_atom_pos = atom_pos_ground_truth + padded_sigmas * noise  # alphas are 1.
 
 Schedule:
 
-$$ \log \frac{\sigma}{\sigma_{\text{data}}} \sim \mathcal{N}(P_{\text{mean}}, P_{\text{std}}^2)$$
-
+$$ \log \frac{\sigma}{\sigma*{\text{data}}} \sim \mathcal{N}(P*{\text{mean}}, P\_{\text{std}}^2)$$
 
 > Losses
 
@@ -82,7 +80,6 @@ In this section $\vec{x}_l$ means the denoised structure (diffusion model output
 The authors apply a weighted aligned MSE loss to the denoised structure output from the Diffusion Module. They first perform a rigid alignment of the ground truth $\vec{x}^{\text{GT}}_l$ onto the denoised structure $\vec{x}_l$ as
 
 ![folding]({{ "assets/notes-img/bio-informatics/protein generation/abramson2024accurate/15.png" | relative_url }}){:width="800px" .img-frame-black}
-
 
 $$
 \begin{equation}
@@ -93,14 +90,14 @@ $$
 with weights $w_l$ provided in Equation 4. They then compute a weighted MSE
 
 \begin{equation}
-\mathcal{L}_{\text{MSE}} = \frac{1}{3} \, \text{mean}_l \left( w_l \left\| \vec{x}_l - \vec{x}^{\text{GT-aligned}}_l \right\|^2 \right)
+\mathcal{L}\_{\text{MSE}} = \frac{1}{3} \, \text{mean}\_l \left( w_l \left\| \vec{x}\_l - \vec{x}^{\text{GT-aligned}}\_l \right\|^2 \right)
 \tag{3}
 \end{equation}
 
 with upweighting of nucleotide and ligand atoms as
 
 \begin{equation}
-w_l = 1 + f_l^{\text{is\_dna}} \alpha^{\text{dna}} + f_l^{\text{is\_rna}} \alpha^{\text{rna}} + f_l^{\text{is\_ligand}} \alpha^{\text{ligand}}
+w_l = 1 + f_l^{\text{is_dna}} \alpha^{\text{dna}} + f_l^{\text{is_rna}} \alpha^{\text{rna}} + f_l^{\text{is_ligand}} \alpha^{\text{ligand}}
 \tag{4}
 \end{equation}
 
@@ -119,7 +116,6 @@ where $\mathcal{B}$ is the set of tuples (start atom index, end atom index) defi
 
 ![folding]({{ "assets/notes-img/bio-informatics/protein generation/abramson2024accurate/16.png" | relative_url }}){:width="800px" .img-frame-black}
 
-
 The authors also apply an auxiliary structure-based loss based on smooth LDDT, as described in Algorithm 27. The final loss from the Diffusion Module is then:
 
 $$
@@ -131,23 +127,14 @@ $$
 
 Where $\hat{t}$ is the sampled noise level, $\sigma_{\text{data}}$ is a constant determined by the variance of the data (set to 16), and $\alpha_{\text{bond}}$ is 0 for regular training and 1 for both fine tuning stages. Prior to computing the losses, the authors apply an optimal ground truth chain assignment as described in subsection 4.2.
 
-
 During inference the noise schedule is defined as
 \begin{equation}
-\hat{t} = \sigma_{\text{data}} \cdot \left( s_{\max}^{1/p} + t \cdot (s_{\min}^{1/p} - s_{\max}^{1/p}) \right)^p
+\hat{t} = \sigma*{\text{data}} \cdot \left( s*{\max}^{1/p} + t \cdot (s*{\min}^{1/p} - s*{\max}^{1/p}) \right)^p
 \tag{7}
 \end{equation}
 
 where $s_{\max} = 160$, $s_{\min} = 4 \cdot 10^{-4}$, $p = 7$, and $t$ is distributed uniformly between $[0, 1]$ with a step size of $\frac{1}{200}$.
 
-
-
 #### Architecture
 
 ![folding]({{ "assets/notes-img/bio-informatics/protein generation/abramson2024accurate/11.png" | relative_url }}){:width="800px" .img-frame-black}
-
-
-
-
-
-

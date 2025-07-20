@@ -16,14 +16,16 @@ bibtex: |-
 ---
 
 ## Summary
+
 ---
 
 ## Technical Details
+
 ---
 
 ### Discrete Flow Matching
 
-For each real datapoint $x_1$, we define a *very simple* two-state interpolation between the mask token $M$ and the clean value $x_1$:
+For each real datapoint $x_1$, we define a _very simple_ two-state interpolation between the mask token $M$ and the clean value $x_1$:
 
 $$
 p_{t|1}^{\text{mask}}(x_t \mid x_1) = t \, \delta\{x_t, x_1\} + (1 - t) \, \delta\{x_t, M\}, \quad t \in [0, 1]
@@ -37,7 +39,7 @@ $$
 
 #### Training the denoiser
 
-The goal is a network $\hat{p}^{\theta}_{1 \mid t}(x_1 \mid x_t)$ that predicts the clean value. 
+The goal is a network $\hat{p}^{\theta}_{1 \mid t}(x_1 \mid x_t)$ that predicts the clean value.
 
 Because $p_{t \mid 1}$ is in closed form, we can generate training pairs $(x_t, x_1, t)$ without simulating the CTMC.
 
@@ -51,7 +53,7 @@ x_t \sim p_{t|1}(x_t \mid x_1)
 }} \left[ -\log \hat{p}^{\theta}_{1|t}(x_1 \mid x_t) \right]
 $$
 
-*Key fact:* $\mathcal{L}_{\text{CE}}$ **does not depend on the rate matrix** you will choose for inference, so training and sampling can be treated separately.
+_Key fact:_ $\mathcal{L}_{\text{CE}}$ **does not depend on the rate matrix** you will choose for inference, so training and sampling can be treated separately.
 
 #### Constructing a time‑dependent rate matrix
 
@@ -67,13 +69,14 @@ R_t^{\star}(x_t, j \mid x_1) = \frac{\delta\{x_t, M\} \, \delta\{j, x_1\}}{1 - t
 $$
 
 > Interpretation:
-> - You jump *only* when you are currently masked.
-> - You jump *only* to the correct clean value $x_1$.
+>
+> - You jump _only_ when you are currently masked.
+> - You jump _only_ to the correct clean value $x_1$.
 > - The hazard $(1 - t)^{-1}$ grows as $t \to 1$, guaranteeing that the jump occurs before time 1 with probability 1.
 
 ### Multimodal Flows
 
-Following FrameFlow, we refer to the protein structure as the *backbone* atomic coordinates of each residue.  
+Following FrameFlow, we refer to the protein structure as the _backbone_ atomic coordinates of each residue.  
 The structure is represented as elements of $\mathrm{SE}(3)$ to capture the rigidity of the local frames along the backbone.
 
 A protein of length $D$ residues can then be represented as:
@@ -105,13 +108,14 @@ We define the **multimodal conditional flow** as $p_{t\mid 1}(\mathbf{T}_t \mid 
 We impose **independence over both residues and modalities**:
 
 $$
-p_{t\mid 1}(\mathbf{T}_t \mid \mathbf{T}_1) = \prod_{d=1}^{D} 
+p_{t\mid 1}(\mathbf{T}_t \mid \mathbf{T}_1) = \prod_{d=1}^{D}
 p_{t\mid 1}(x_t^d \mid x_1^d) \, p_{t\mid 1}(r_t^d \mid r_1^d) \, p_{t\mid 1}(a_t^d \mid a_1^d)
 $$
 
-*Continuous schedules* (identical to FrameFlow / Yim et al. 2023a):
+_Continuous schedules_ (identical to FrameFlow / Yim et al. 2023a):
 
 - Translation:
+
   $$
   x_t^d = t x_1^d + (1 - t)x_0^d, \quad x_0^d \sim \mathcal{N}(0, I)
   $$
@@ -121,7 +125,7 @@ $$
   r_t^d = \exp_{r_0^d} \left( t \log_{r_0^d}(r_1^d) \right), \quad r_0^d \sim \mathcal{U}_{\mathrm{SO}(3)}
   $$
 
-*Discrete mask schedule* (our focus):
+_Discrete mask schedule_ (our focus):
 
 $$
 p_{t\mid 1}(a_t^d \mid a_1^d) = t \, \delta\{a_t^d, a_1^d\} + (1 - t) \, \delta\{a_t^d, M\}
@@ -129,7 +133,7 @@ $$
 
 #### Trajectory generator
 
-We build a *single* multimodal process whose marginal at every time matches the factorised $p_{t\mid 1}$.
+We build a _single_ multimodal process whose marginal at every time matches the factorised $p_{t\mid 1}$.
 
 - Continuous modalities. Choose velocity fields that individually produce the conditional marginals:
 
@@ -148,7 +152,7 @@ $$
 - Discrete modality — minimal-jump CTMC
 
 $$
-R_t^{\star}(a_t^d \rightarrow j \mid a_1^d) = 
+R_t^{\star}(a_t^d \rightarrow j \mid a_1^d) =
 \frac{\delta\{a_t^d, M\} \, \delta\{j, a_1^d\}}{1 - t}
 \qquad \text{(15)}
 $$
@@ -158,8 +162,8 @@ $$
 Sample $t \sim \mathcal{U}(0, 1)$ and corrupt $\mathbf{T}_1$:
 
 $$
-\mathbf{T}_t = \left\{ t x_1^d + (1 - t) x_0^d,\ 
-\exp_{r_0^d}\left[t \log_{r_0^d}(r_1^d)\right],\ 
+\mathbf{T}_t = \left\{ t x_1^d + (1 - t) x_0^d,\
+\exp_{r_0^d}\left[t \log_{r_0^d}(r_1^d)\right],\
 \text{Bernoulli}(t, a_1^d, M) \right\}_{d=1}^{D}
 $$
 
@@ -219,8 +223,8 @@ while t < 1:
 return {x^d, r^d, a^d}_{d=1}^D
 ```
 
-
 > Notes
+>
 > - 1.3 uses the **minimal-jump rule**. To introduce extra randomness, add an $\eta$-scaled detailed-balance matrix before the thinning step.
 > - $\Delta t$ can be made adaptive (e.g., $\Delta t \propto 1 - t$) to cope with the diverging rate near $t = 1$.
 > - You may stop at $t = 0.999$ and set any remaining $M$ tokens to $\arg\max \hat{\pi}$.
@@ -233,21 +237,22 @@ Training data consisted of length 60-384 proteins from the Protein Data Bank (PD
 
 ### Distillation
 
-Our analysis revealed the original PDB sequences achieved worse designability than PMPNN. We sought to improve performance by distilling knowledge from other models. 
+Our analysis revealed the original PDB sequences achieved worse designability than PMPNN. We sought to improve performance by distilling knowledge from other models.
+
 1. we first replaced the original sequence of each structure in the training dataset with the lowest scRMSD sequence out of 8 generated by PMPNN conditioned on the structure.
 2. we generated synthetic structures of random lengths between 60-384 using an initial Multiflow model and added those that passed PMPNN 8 designability into the training dataset with the lowest scRMSD PMPNN sequence.
 
 ### Metrics
 
 - Designability.
-The generated structure is called designable if scRMSD <2˚ A.
-Designability is the percentage of designable samples.
+  The generated structure is called designable if scRMSD <2˚ A.
+  Designability is the percentage of designable samples.
 
-- Diversity. 
-We use FoldSeek to report diversity as the number of unique clusters across designable samples.
+- Diversity.
+  We use FoldSeek to report diversity as the number of unique clusters across designable samples.
 
-- Novelty. 
-Novelty is the average TM-score of each designable sample to its most similar protein in PDB.
+- Novelty.
+  Novelty is the average TM-score of each designable sample to its most similar protein in PDB.
 
 ### Co-design results
 
@@ -256,4 +261,3 @@ Novelty is the average TM-score of each designable sample to its most similar pr
 ### Forward and inverse folding
 
 ![folding]({{ "assets/notes-img/bio-informatics/protein generation/campbell2024generative/2.png" | relative_url }}){:width="600px"}
-

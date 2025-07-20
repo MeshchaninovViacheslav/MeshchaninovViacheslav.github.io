@@ -9,7 +9,12 @@
           {% if site.data.venues[entry.abbr].color != blank %}
             {% assign venue_style = site.data.venues[entry.abbr].color | prepend: 'style="background-color:' | append: '"' %}
           {%- endif -%}
-          <abbr class="badge rounded w-100" {% if venue_style %} {{ venue_style }} {% endif -%}>
+          <abbr
+            class="badge rounded w-100"
+            {% if venue_style %}
+              {{ venue_style }}
+            {% endif -%}
+          >
             {% if site.data.venues[entry.abbr].url %}
               <a href="{{ site.data.venues[entry.abbr].url }}">{{ entry.abbr }}</a>
             {% else %}
@@ -26,7 +31,9 @@
   <!-- Entry bib key -->
   <div id="{{ entry.key }}" class="col-sm-10">
     <!-- Title -->
-    <div class="title"><strong>{{ entry.title }}</strong></div>
+    <div class="title">
+      <strong>{{ entry.title }}</strong>
+    </div>
     <!-- Author -->
     <div class="author">
       {% assign author_array_size = entry.author_array | size %}
@@ -193,7 +200,9 @@
         {% if entry.pdf contains '://' %}
           <a href="{{ entry.pdf }}" class="btn btn-sm btn-outline-primary z-depth-0 pdf-btn" role="button">PDF</a>
         {% else %}
-          <a href="{{ entry.pdf | prepend: '/assets/pdf/' | relative_url }}" class="btn btn-sm btn-outline-primary z-depth-0 pdf-btn" role="button">PDF</a>
+          <a href="{{ entry.pdf | prepend: '/assets/pdf/' | relative_url }}" class="btn btn-sm btn-outline-primary z-depth-0 pdf-btn" role="button"
+            >PDF</a
+          >
         {% endif %}
       {% endif %}
       {% if entry.supp %}
@@ -218,14 +227,18 @@
         {% if entry.poster contains '://' %}
           <a href="{{ entry.poster }}" class="btn btn-sm btn-outline-primary z-depth-0" role="button">POSTER</a>
         {% else %}
-          <a href="{{ entry.poster | prepend: '/assets/pdf/' | relative_url }}" class="btn btn-sm btn-outline-primary z-depth-0" role="button">POSTER</a>
+          <a href="{{ entry.poster | prepend: '/assets/pdf/' | relative_url }}" class="btn btn-sm btn-outline-primary z-depth-0" role="button"
+            >POSTER</a
+          >
         {% endif %}
       {% endif %}
       {% if entry.slides %}
         {% if entry.slides contains '://' %}
           <a href="{{ entry.slides }}" class="btn btn-sm btn-outline-primary z-depth-0" role="button">SLIDES</a>
         {% else %}
-          <a href="{{ entry.slides | prepend: '/assets/pdf/' | relative_url }}" class="btn btn-sm btn-outline-primary z-depth-0" role="button">SLIDES</a>
+          <a href="{{ entry.slides | prepend: '/assets/pdf/' | relative_url }}" class="btn btn-sm btn-outline-primary z-depth-0" role="button"
+            >SLIDES</a
+          >
         {% endif %}
       {% endif %}
       {% if entry.website %}
@@ -234,9 +247,9 @@
     </div>
 
     {% if entry.abstract %}
-    <div id="abstract-{{ entry.key }}" class="abstract-box">
-      {{ entry.abstract }}
-    </div>
+      <div id="abstract-{{ entry.key }}" class="abstract-box">
+        {{ entry.abstract }}
+      </div>
     {% endif %}
 
     {% if entry.award %}

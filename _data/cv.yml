@@ -51,7 +51,6 @@
       description:
         - Developed a tool for analysis and comparison of full-reference neural network metrics of video quality.
 
-
 - title: Honors and Awards
   type: time_table
   contents:
@@ -76,7 +75,7 @@
       items:
         - Bayesian Methods in Machine Learning at the faculty of Computer Science HSE University
         - Natural Language Processing at the faculty of Computer Science HSE University
-    
+
     - title: Teaching assistance
       year: 2023
       items:
@@ -89,7 +88,6 @@
       items:
         - Bayesian Methods in Machine Learning at Yandex School of Data Analysis
         - Bayesian Methods in Machine Learning at CMC MSU
-
 # - title: Academic Interests
 #   type: nested_list
 #   contents:

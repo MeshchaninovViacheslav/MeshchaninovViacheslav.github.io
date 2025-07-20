@@ -19,22 +19,22 @@ bibtex: |-
 ---
 
 ## Summary
+
 ---
 
 ESM-3 introduces a masked diffusion approach that operates on a tokenized representation of sequence, structure, and function. Each aspect is encoded independently using specialized tokenizers.
 
 ## Technical Details
+
 ---
 
 ### Sequence Tokenizer
 
 29 tokens total: 20 canonical + BOS, EOS, MASK, PAD, UNK + 4 non-standard (B, U, Z, O).
 
-
 ### Structure Tokenizer
 
 Each residue is associated with one of 4,096 structure tokens (+4 special tokens), designed to provide a rich, learned representation of its local neighborhood. The tokens are generated with a VQ-VAE encoder, with a corresponding decoder to enable decoding of generated tokens back to 3D coordinates.
-
 
 #### Encoder
 
@@ -72,14 +72,12 @@ Input: `X ∈ ℝ^{L × d}`, `T = [{Rᵢ, tᵢ}] ∈ SE(3)^L`
 
 A bunch of losses. `# TODO`
 
-
-
 ### Function Tokenizer
 
 `# TODO`
 
-
 ## Training
+
 ---
 
 ### Pretraining Tasks
@@ -87,6 +85,7 @@ A bunch of losses. `# TODO`
 In initial experimentation, we found that a fixed 15% noise schedule led to poor generation results, while a linear noise schedule where probability of each mask rate was constant led to good generation but poor representation learning results.
 
 We find a good trade-off between representation learning and generation by sampling the noise schedule from a mixture distribution:
+
 - 80% of the time, the mask rate is sampled from a Beta(3, 9) distribution with mean mask rate 25%.
 - 20% of the time, the mask rate is sampled from a uniform distribution.
 
@@ -96,10 +95,8 @@ For the structure coordinate track, we also modify the masking to be applied as 
 
 Along with applying noise to each track, we want to ensure ESM-3 is able to perform well when some tracks are not provided at all.
 
-
 ### Structure Noise
 
 We apply Gaussian noise with standard deviation 0.1 to all coordinates the model takes as input.
-
 
 **Additional Resource**: https://chrispiech.github.io/probabilityForComputerScientists/en/part4/beta/

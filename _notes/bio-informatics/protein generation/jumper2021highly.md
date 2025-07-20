@@ -19,6 +19,7 @@ bibtex: |-
 ---
 
 ## AlphaFold Pipeline
+
 ---
 
 The whole pipeline is aimed to generate protein backbone for protein sequence.
@@ -28,9 +29,9 @@ So the input to the pipeline is a sequence of amino acids.
 
 ### Genetic database search → retrieving evolutionary relatives
 
-Fast profile/HMM tools such as JackHMMER, HHblits or MMseqs2 scan tens of millions of sequences (UniRef 90, UniProt, BFD, MGnify, Uniclust 30) for anything that is measurably homologous to your protein. 
+Fast profile/HMM tools such as JackHMMER, HHblits or MMseqs2 scan tens of millions of sequences (UniRef 90, UniProt, BFD, MGnify, Uniclust 30) for anything that is measurably homologous to your protein.
 
-> What is measurably homologous? 
+> What is measurably homologous?
 
 **Homologous = from a common ancestor.**
 Two protein (or DNA) sequences are called homologous when they ultimately descended from the same ancestral gene. That fact is binary—either they are or they aren't—but we can only infer it from sequence data.
@@ -39,11 +40,11 @@ Two protein (or DNA) sequences are called homologous when they ultimately descen
 
 **Practical rules of thumb**
 
-- **Percent identity.** 
-Over a full-length alignment, ≥ 30 % identity is almost always enough to call two proteins homologous; below ~20 % you need profile or HMM methods to pick up the signal.
-pmc.ncbi.nlm.nih.gov
+- **Percent identity.**
+  Over a full-length alignment, ≥ 30 % identity is almost always enough to call two proteins homologous; below ~20 % you need profile or HMM methods to pick up the signal.
+  pmc.ncbi.nlm.nih.gov
 - **Profile methods extend the range.** T
-ools such as HHblits compare profiles (Hidden Markov Models) instead of raw sequences, letting you detect "remote" homology even when pairwise identity drops into the teens.
+  ools such as HHblits compare profiles (Hidden Markov Models) instead of raw sequences, letting you detect "remote" homology even when pairwise identity drops into the teens.
 
 > Why does it matter?
 
@@ -55,8 +56,8 @@ This operation returns a list of homologous sequences, a large pool of sequences
 <details class="details-frame" markdown="1">
   <summary>1. Lines the hits up residue-by-residue so that amino acids performing the same functional/structural role sit in the same column. </summary>
 
-  Think of a protein sequence as a long sentence where each amino-acid "word" has a job.
-  When we build a multiple-sequence alignment (MSA), we try to line sentences up so that the words that play the same part of the sentence—subject, verb, object—appear in vertical columns. In the protein world, that means:
+Think of a protein sequence as a long sentence where each amino-acid "word" has a job.
+When we build a multiple-sequence alignment (MSA), we try to line sentences up so that the words that play the same part of the sentence—subject, verb, object—appear in vertical columns. In the protein world, that means:
 
   <br>
 
@@ -95,22 +96,22 @@ This operation returns a list of homologous sequences, a large pool of sequences
 
   <br>
 
-  When the alignment is correct, every row in a given column traces back to the same position in the common ancestor of all those proteins, so the residues in that column:
+When the alignment is correct, every row in a given column traces back to the same position in the common ancestor of all those proteins, so the residues in that column:
 
-  - Sit at the same 3-D spot in the folded structure, and
-  - Usually have the same job (catalysis, binding, packing, flexibility, etc.).
+- Sit at the same 3-D spot in the folded structure, and
+- Usually have the same job (catalysis, binding, packing, flexibility, etc.).
 
-  That's why you often see:
+That's why you often see:
 
-  - **Conserved columns**: the exact amino acid hardly changes because the role is intolerant to mutation (e.g., catalytic Ser).
-  - **Variable but chemically similar columns**: the individual letters differ, but they share properties—say, all hydrophobic—because any residue that behaves the same is good enough for that structural slot.
+- **Conserved columns**: the exact amino acid hardly changes because the role is intolerant to mutation (e.g., catalytic Ser).
+- **Variable but chemically similar columns**: the individual letters differ, but they share properties—say, all hydrophobic—because any residue that behaves the same is good enough for that structural slot.
 
-  So in the sentence you quoted, "**amino acids performing the same functional/structural role**" means residues that occupy equivalent positions in homologous proteins and therefore contribute in equivalent ways to what the protein does or how it folds.
-  Lining them up in the same column lets AlphaFold (or any analysis) read the evolutionary record of which jobs are critical and which can flex.
+So in the sentence you quoted, "**amino acids performing the same functional/structural role**" means residues that occupy equivalent positions in homologous proteins and therefore contribute in equivalent ways to what the protein does or how it folds.
+Lining them up in the same column lets AlphaFold (or any analysis) read the evolutionary record of which jobs are critical and which can flex.
 
-  > Example
+> Example
 
-  > TODO
+> TODO
 
 </details>
 
@@ -127,9 +128,8 @@ This tensor is the main input to the Evoformer block.
 
 Build an initial L × L feature matrix that simply tells the network how far apart residues are in sequence.
 
-Think of it as a very lightweight spatial prior (positional information) before any structural reasoning happens. 
+Think of it as a very lightweight spatial prior (positional information) before any structural reasoning happens.
 Without this, the model would have to discover contacts from scratch, making learning far harder.
-
 
 ### Structure database search → templates
 
@@ -138,32 +138,33 @@ Without this, the model would have to discover contacts from scratch, making lea
 <details class="details-frame" markdown="1">
   <summary>2. For the top ~20 alignments that pass an E‑value & coverage threshold, AlphaFold copies the template's backbone coordinates and encodes the inter‑residue distances/orientations into fixed‑size bins. </summary>
 
-  This geometric information is what eventually feeds into the pair representation and gives the network concrete spatial hints, especially in regions where the multiple‑sequence alignment (MSA) is thin.
+This geometric information is what eventually feeds into the pair representation and gives the network concrete spatial hints, especially in regions where the multiple‑sequence alignment (MSA) is thin.
 
-  > E-value (expect value)
+> E-value (expect value)
 
-  It measures a chance of meeting the sequence with aligment score bigger than given one in the whole database.
-  <br>
-  **Formal definition**
+It measures a chance of meeting the sequence with aligment score bigger than given one in the whole database.
+<br>
+**Formal definition**
 
-  $E = Kmne^{-\lambda S}$
-  (the Karlin-Altschul equation), where S is the raw alignment score, m and n are the effective lengths of the query and database, and K, λ are statistical constants for the scoring matrix.
+$E = Kmne^{-\lambda S}$
+(the Karlin-Altschul equation), where S is the raw alignment score, m and n are the effective lengths of the query and database, and K, λ are statistical constants for the scoring matrix.
 
   <br>
   Lower is better.
   E = 1 × 10⁻³ means you'd expect one false-positive hit in a thousand equally good database searches.
 
-  > Coverage threshold
+> Coverage threshold
 
-  $ \text{Coverage} = \frac{\text{aligned residues}}{\text{query length}}$. 
-  A spectacular E-value is useless if it aligns only a tiny fragment—that fragment may not be relevant to the overall fold you want to model.
+$ \text{Coverage} = \frac{\text{aligned residues}}{\text{query length}}$.
+A spectacular E-value is useless if it aligns only a tiny fragment—that fragment may not be relevant to the overall fold you want to model.
 
-  > Why both thresholds are used together
+> Why both thresholds are used together
 
-  1. E-value guards against false positives (bad statistics).
-  2. Coverage guards against trivial positives (tiny true alignments that are uninformative for structure).
-  
-  Only hits that pass both filters are promoted to "template" status; their atomic coordinates are then converted to the distance-and-orientation bins that seed the pair representation.
+1. E-value guards against false positives (bad statistics).
+2. Coverage guards against trivial positives (tiny true alignments that are uninformative for structure).
+
+Only hits that pass both filters are promoted to "template" status; their atomic coordinates are then converted to the distance-and-orientation bins that seed the pair representation.
+
 </details>
 
 > Why it matters
@@ -185,19 +186,19 @@ Inside the model these coordinate‑based features are converted to a 2‑D arra
   </div>
 </div>
 
-
 <details class="details-frame" markdown="1">
   <summary>1. Row‑wise gated self‑attention with pair bias. </summary>
 
-  - What it does. For every single sequence (row) in the MSA, apply self‑attention along the residue axis.
-  - Why "pair bias". The attention logits get an additive term derived from the current pair embedding for (i, j), so each sequence row is "aware" of the model's latest guess about how residues i and j interact.
-  - Why "gated". A learned sigmoid gate scales the output, letting the network suppress noisy signals when the alignment at that row is poor.
-  - Motivation. Propagate long‑range context within each homolog while conditioning on emerging structural hints.
+- What it does. For every single sequence (row) in the MSA, apply self‑attention along the residue axis.
+- Why "pair bias". The attention logits get an additive term derived from the current pair embedding for (i, j), so each sequence row is "aware" of the model's latest guess about how residues i and j interact.
+- Why "gated". A learned sigmoid gate scales the output, letting the network suppress noisy signals when the alignment at that row is poor.
+- Motivation. Propagate long‑range context within each homolog while conditioning on emerging structural hints.
 
 <div class="algorithm-box" markdown="1">
 <span class="caption">Algorithm: Row‑wise Gated Self‑Attention with Pair Bias (single head $h$)</span>
 
 **Inputs:**
+
 $$
 \begin{align*}
     \mathbf{M} &\in \mathbb{R}^{S \times L \times d_m} && \text{(current MSA embeddings)}\\
@@ -243,118 +244,119 @@ $$
 <details class="details-frame" markdown="1">
   <summary>2. Column‑wise gated self‑attention. </summary>
 
-  - What it does. Now fix a residue position r and attend down the column across the s sequences.
-  - Motivation. Let each residue in the target sequence look at how that same position varies (or co‑varies) across evolution, capturing conservation and compensatory mutations.
-  - Complexity trick. Row‑ and column‑wise attention factorise a huge 2‑D attention ( s r × s r ) into two linear passes, cutting time and memory by ~O(s r)
+- What it does. Now fix a residue position r and attend down the column across the s sequences.
+- Motivation. Let each residue in the target sequence look at how that same position varies (or co‑varies) across evolution, capturing conservation and compensatory mutations.
+- Complexity trick. Row‑ and column‑wise attention factorise a huge 2‑D attention ( s r × s r ) into two linear passes, cutting time and memory by ~O(s r)
 </details>
 
 <details class="details-frame" markdown="1">
   <summary>3. Transition </summary>
 
-  - A two‑layer feed‑forward network (ReLU / GLU) applied to every (s, r) token independently — the same role a "Transformer FFN" plays after its attention layer.
-  - Purpose: mix features non‑linearly and give the model extra capacity. 
+- A two‑layer feed‑forward network (ReLU / GLU) applied to every (s, r) token independently — the same role a "Transformer FFN" plays after its attention layer.
+- Purpose: mix features non‑linearly and give the model extra capacity. 
 
 </details>
 
 <details class="details-frame" markdown="1">
   <summary>4. Outer product mean </summary>
 
-  - How. For each residue pair $(i, j)$, take the embedding vectors $v_i, v_j$ from every sequence, form the outer product $v_i \bigotimes v_j$ (a matrix), then average over the $s$ sequences.
-  - What it produces. A rich co‑evolution feature saying "when residue $i$ mutates like this, residue $j$ mutates like that."
-  - Where it goes. Added into the pair tensor, giving it evolutionary coupling signal.
+- How. For each residue pair $(i, j)$, take the embedding vectors $v_i, v_j$ from every sequence, form the outer product $v_i \bigotimes v_j$ (a matrix), then average over the $s$ sequences.
+- What it produces. A rich co‑evolution feature saying "when residue $i$ mutates like this, residue $j$ mutates like that."
+- Where it goes. Added into the pair tensor, giving it evolutionary coupling signal.
 
 </details>
 
 <details class="details-frame" markdown="1">
   <summary>5. Triangle update using outgoing edges </summary>
 
-  - View the pair tensor as a fully‑connected directed graph of residues; each edge $(i, j)$ stores an embedding $z_{i, j}$.
-  - Update edge $(i, j)$ by multiplying / gating information that flows along the two edges $(i, k)$ and $(k, j)$ for every third residue $k$.
-  - **Motivation**: Impose triangle‑inequality‑like constraints and capture three‑body interactions essential for 3‑D geometry.
+- View the pair tensor as a fully‑connected directed graph of residues; each edge $(i, j)$ stores an embedding $z_{i, j}$.
+- Update edge $(i, j)$ by multiplying / gating information that flows along the two edges $(i, k)$ and $(k, j)$ for every third residue $k$.
+- **Motivation**: Impose triangle‑inequality‑like constraints and capture three‑body interactions essential for 3‑D geometry.
 
-  > Algorithm
+> Algorithm
 
-  Let $\mathbf{Z} \in \mathbb{R}^{L \times L \times c}$ be the current pair tensor and let $i, j, k \in \{1, \dots, L\}$ index residues.
+Let $\mathbf{Z} \in \mathbb{R}^{L \times L \times c}$ be the current pair tensor and let $i, j, k \in \{1, \dots, L\}$ index residues.
 
-  **1. Project the two "arms" of each triangle**
+**1. Project the two "arms" of each triangle**
 
-  $$
-  \begin{align*}
-    & \mathbf{a}_{ik} &= W^{(a)} \mathbf{z}_{ik} \in \mathbb{R}^{c_m}, && \text{($i \rightarrow k$ arm)} \\
-    & \mathbf{b}_{kj} &= W^{(b)} \mathbf{z}_{kj} \in \mathbb{R}^{c_m}, && \text{($k \rightarrow j$ arm)}
-  \end{align*}
-  $$
+$$
+\begin{align*}
+  & \mathbf{a}_{ik} &= W^{(a)} \mathbf{z}_{ik} \in \mathbb{R}^{c_m}, && \text{($i \rightarrow k$ arm)} \\
+  & \mathbf{b}_{kj} &= W^{(b)} \mathbf{z}_{kj} \in \mathbb{R}^{c_m}, && \text{($k \rightarrow j$ arm)}
+\end{align*}
+$$
 
-  - $W^{(a)}, W^{(b)} \in \mathbb{R}^{c_m \times c}$ are learned linear maps.
-  - The projection width $c_m$ is usually $c/2$ so the outer product that follows keeps the channel count $\approx c$.
+- $W^{(a)}, W^{(b)} \in \mathbb{R}^{c_m \times c}$ are learned linear maps.
+- The projection width $c_m$ is usually $c/2$ so the outer product that follows keeps the channel count $\approx c$.
 
-  **2. Form the triangle message for edge $(i, j)$:**
-  $$
-  \begin{align*}
-    \quad \mathbf{t}_{ij} = \sum_{k=1}^{L} \frac{\mathbf{a}_{ik} \odot \mathbf{b}_{kj}}{\sqrt{L}} \in \mathbb{R}^{c_m}
-  \end{align*}
-  $$
+**2. Form the triangle message for edge $(i, j)$:**
 
-  - Element-wise product $\odot$ mixes the two arms.
-  - Division by $\sqrt{L}$ is a variance-stabilising scale (analogous to the $1/\sqrt{d}$ in self-attention).
+$$
+\begin{align*}
+  \quad \mathbf{t}_{ij} = \sum_{k=1}^{L} \frac{\mathbf{a}_{ik} \odot \mathbf{b}_{kj}}{\sqrt{L}} \in \mathbb{R}^{c_m}
+\end{align*}
+$$
 
-  **3. Transform, gate and add as a residual**
+- Element-wise product $\odot$ mixes the two arms.
+- Division by $\sqrt{L}$ is a variance-stabilising scale (analogous to the $1/\sqrt{d}$ in self-attention).
 
-  $$
-  \begin{align*}
-    & \mathbf{u}_{ij} = W^{(o)} \mathbf{t}_{ij} \in \mathbb{R}^{c} \\
-    & g_{ij} = \sigma\left( (\mathbf{w}^{(g)})^\top \mathbf{z}_{ij} + b^{(g)} \right) \in (0, 1) \\
-    & \mathbf{z}'_{ij} = \mathbf{z}_{ij} + g_{ij} \, \mathbf{u}_{ij} \\
-  \end{align*}
-  $$
+**3. Transform, gate and add as a residual**
 
-  - $W^{(o)} \in \mathbb{R}^{c \times c_m}$ projects back to the original channel size.
-  - $g_{ij}$ is a sigmoid gate computed from the pre-update edge; it lets the network down-weight noisy triangles.
-  - The final line is a residual connection identical in spirit to the one in a Transformer block.
+$$
+\begin{align*}
+  & \mathbf{u}_{ij} = W^{(o)} \mathbf{t}_{ij} \in \mathbb{R}^{c} \\
+  & g_{ij} = \sigma\left( (\mathbf{w}^{(g)})^\top \mathbf{z}_{ij} + b^{(g)} \right) \in (0, 1) \\
+  & \mathbf{z}'_{ij} = \mathbf{z}_{ij} + g_{ij} \, \mathbf{u}_{ij} \\
+\end{align*}
+$$
 
-  **4. Vectorised Form**
+- $W^{(o)} \in \mathbb{R}^{c \times c_m}$ projects back to the original channel size.
+- $g_{ij}$ is a sigmoid gate computed from the pre-update edge; it lets the network down-weight noisy triangles.
+- The final line is a residual connection identical in spirit to the one in a Transformer block.
 
-  If we reshape $\mathbf{Z}$ to a 3-D tensor and use matrix multiplication, the whole operation is:
-  
-  $$
-  \begin{align*}
-     \mathbf{Z} \leftarrow \mathbf{Z} + \sigma\left( \langle \mathbf{Z}, \mathbf{w}^{(g)} \rangle + b^{(g)} \right) \odot W^{(o)} \left( \frac{\mathbf{A} \odot \mathbf{B}}{\sqrt{L}} \mathbf{1} \right)
-  \end{align*}
-  $$
+**4. Vectorised Form**
 
-  with $\mathbf{A} = W^{(a)} \mathbf{Z}, \quad \mathbf{B} = W^{(b)} \mathbf{Z}$ and the sum over $k$ is implemented by a batched tensor contraction.
+If we reshape $\mathbf{Z}$ to a 3-D tensor and use matrix multiplication, the whole operation is:
 
-  **Intuition**
+$$
+\begin{align*}
+   \mathbf{Z} \leftarrow \mathbf{Z} + \sigma\left( \langle \mathbf{Z}, \mathbf{w}^{(g)} \rangle + b^{(g)} \right) \odot W^{(o)} \left( \frac{\mathbf{A} \odot \mathbf{B}}{\sqrt{L}} \mathbf{1} \right)
+\end{align*}
+$$
 
-  - The update $\textbf{looks along paths}$ $i \rightarrow k \rightarrow j$ ("out-going" edges from $i$).
-  - It injects $\textit{multiplicative}$ three-body information, helping the network encode triangle inequalities and side-chain packing constraints—something plain pairwise couplings cannot capture.
+with $\mathbf{A} = W^{(a)} \mathbf{Z}, \quad \mathbf{B} = W^{(b)} \mathbf{Z}$ and the sum over $k$ is implemented by a batched tensor contraction.
+
+**Intuition**
+
+- The update $\textbf{looks along paths}$ $i \rightarrow k \rightarrow j$ ("out-going" edges from $i$).
+- It injects $\textit{multiplicative}$ three-body information, helping the network encode triangle inequalities and side-chain packing constraints—something plain pairwise couplings cannot capture.
 
 </details>
 
 <details class="details-frame" markdown="1">
   <summary>6. Triangle update – using incoming edges </summary>
 
-  Same operation but centred on the opposite vertex, so the model sees both orientations of every residue triplet.
+Same operation but centred on the opposite vertex, so the model sees both orientations of every residue triplet.
 
 </details>
 
 <details class="details-frame" markdown="1">
   <summary>7. Triangle self‑attention around starting node </summary>
 
-  - Treat all edges that emanate from residue i as the "tokens" of an attention layer; use edge $(i, j)$ as the query and the set { $(i, k)$ } as keys/values.
-  - Learns patterns like "edges from this residue fan out in a β‑sheet vs. coil". 
+- Treat all edges that emanate from residue i as the "tokens" of an attention layer; use edge $(i, j)$ as the query and the set { $(i, k)$ } as keys/values.
+- Learns patterns like "edges from this residue fan out in a β‑sheet vs. coil". 
 </details>
 
 <details class="details-frame" markdown="1">
   <summary>8. Triangle self‑attention around ending node </summary>
 
-  - Same again but for edges that end at residue j. Together, the two triangle‑attention layers let the model reason about local geometry from both directions. 
+- Same again but for edges that end at residue j. Together, the two triangle‑attention layers let the model reason about local geometry from both directions. 
 </details>
 
 <details class="details-frame" markdown="1">
   <summary>9. Transition </summary>
 
-  - A second feed‑forward network, now on every $(i, j)$ edge, to consolidate the information distilled by the triangle operations before looping to the next Evoformer block. 
+- A second feed‑forward network, now on every $(i, j)$ edge, to consolidate the information distilled by the triangle operations before looping to the next Evoformer block. 
 </details>
 
 ### Structure Module
@@ -391,20 +393,20 @@ $$
 </table>
 <p><em>All three are recycled from the previous passes of AlphaFold; on the very first pass the frames are just those trivial identities.</em></p>
 
-
 <details class="details-frame" markdown="1">
   <summary>1. Invariant‑Point Attention (IPA) </summary>
 
-  IPA is the SE(3)‑equivariant replacement for the dot‑product attention you know from Transformers.
-  The scalars (queries Q, keys K, values V) work almost exactly as usual, but every token (here: every residue i) is also equipped with a handful of small 3‑D point clouds that move rigidly with the residue's current backbone frame.
+IPA is the SE(3)‑equivariant replacement for the dot‑product attention you know from Transformers.
+The scalars (queries Q, keys K, values V) work almost exactly as usual, but every token (here: every residue i) is also equipped with a handful of small 3‑D point clouds that move rigidly with the residue's current backbone frame.
 
-  ![folding]({{ "assets/notes-img/bio-informatics/protein generation/jumper2021highly/8.png" | relative_url }}){:width="800px" .img-frame-black}
+![folding]({{ "assets/notes-img/bio-informatics/protein generation/jumper2021highly/8.png" | relative_url }}){:width="800px" .img-frame-black}
+
 </details>
 
 <details class="details-frame" markdown="1">
   <summary>2. Rigid‑body update head </summary>
 
-  A small MLP reads the new $S_i$ and predicts a **delta rotation** $\Delta R_i \in SO(3)$ (parameterised as a quaternion or axis--angle) and a **delta translation** $\Delta \mathbf{t}_i \in \mathbb{R}^3$.
+A small MLP reads the new $S_i$ and predicts a **delta rotation** $\Delta R_i \in SO(3)$ (parameterised as a quaternion or axis--angle) and a **delta translation** $\Delta \mathbf{t}_i \in \mathbb{R}^3$.
 
 $$
   \begin{align*}
@@ -413,19 +415,20 @@ $$
 $$
 
 Both deltas are passed through tanh-gated scales so that early iterations make only gentle moves; later passes can refine with larger steps.
-</details>
 
+</details>
 
 <details class="details-frame" markdown="1">
   <summary>3. Side‑chain / χ‑angle head </summary>
 
-  After the 8-th shared block, a final head predicts \textbf{torsion angles} $\chi_1, \chi_2, \ldots$ per residue.
+After the 8-th shared block, a final head predicts \textbf{torsion angles} $\chi_1, \chi_2, \ldots$ per residue.
 
-  The angles are applied to idealised residue templates stored inside the network to produce \textbf{all heavy-atom coordinates} (including side chains and hydrogens).
+The angles are applied to idealised residue templates stored inside the network to produce \textbf{all heavy-atom coordinates} (including side chains and hydrogens).
 
 </details>
 
  
+
 > Why these ingredients?
 
 <table class="table">
@@ -463,22 +466,21 @@ Both deltas are passed through tanh-gated scales so that early iterations make o
 
 1. **"Seed" model:** Train AlphaFold only on experimental PDB structures for ≈ 300 k optimiser steps (just under half of the full run).
 2. **One‑off inference sweep:** Run that seed model on all UniRef90 clusters that have no PDB hit (≈ 2 M clusters). Keep the single representative sequence for each cluster. This step gives you 3‑D coordinates, per‑residue pLDDT and a predicted TM‑score for every sequence.
-Time cost: a few days on the same TPU pod that trains the network.
+   Time cost: a few days on the same TPU pod that trains the network.
 3. **Filtering / re‑weighting:** No hard pre‑training filter.
-Instead, add the predictions to a TFRecord and store pLDDT as a training weight:
-$w_i = (\frac{pLDDT_i}{100})^2$. 
-High‑confidence residues (pLDDT≈90) get weight ≈ 0.8; low‑confidence ones (pLDDT≈30) get weight ≈ 0.1 and therefore contribute almost nothing to the loss.
+   Instead, add the predictions to a TFRecord and store pLDDT as a training weight:
+   $w_i = (\frac{pLDDT_i}{100})^2$.
+   High‑confidence residues (pLDDT≈90) get weight ≈ 0.8; low‑confidence ones (pLDDT≈30) get weight ≈ 0.1 and therefore contribute almost nothing to the loss.
 4. **Merge & continue training:** Resume the same optimiser state. At every step sample 75 % PDB, 25 % self‑distilled crops. Continue for another ≈ 400 k steps. Because the optimiser is not re‑initialised, you can think of this as "fine‑tuning on a bigger, noisy set while still seeing clean PDB data every batch."
 
-
-### On‑the‑fly feature generation 
+### On‑the‑fly feature generation
 
 - **MSA search:**
-Uses jackhmmer (UniRef90), HHblits (BFD, Uniclust30), and MGnify metagenomes.
-To avoid frozen data, 20 % of the time one of those databases is randomly dropped; another 20 % the MSA is subsampled or shuffled.
+  Uses jackhmmer (UniRef90), HHblits (BFD, Uniclust30), and MGnify metagenomes.
+  To avoid frozen data, 20 % of the time one of those databases is randomly dropped; another 20 % the MSA is subsampled or shuffled.
 
 - **Template search:**
-Runs HHsearch against a PDB70 library; at training time the top‑hit template is kept only with p = 0.75 and otherwise discarded so the model learns to work template‑free.
+  Runs HHsearch against a PDB70 library; at training time the top‑hit template is kept only with p = 0.75 and otherwise discarded so the model learns to work template‑free.
 
 - **Random cropping:** If a protein exceeds 384 residues, a contiguous window of crop_size ∼ Uniform(256,384) is chosen; MSAs and templates are cropped consistently.
 
@@ -542,7 +544,6 @@ Only the last pass's outputs receive gradient signals (so GPU/TPU memory is roug
   </tbody>
 </table>
 
-
 ### pLDDT Prediction
 
 AlphaFold2 does not compute its confidence score after it has finished the 3-D model.
@@ -559,28 +560,27 @@ Linear → ReLU (128 hidden channels)
 Linear → Softmax → 50 logits
 Each logit corresponds to an lDDT bin that is 2 units wide
 (centres = 1, 3, 5 … 99).
-The network therefore returns a probability distribution $p_i(b)$ over the 50 bins for every residue. 
+The network therefore returns a probability distribution $p_i(b)$ over the 50 bins for every residue.
 
 For each residue $\text{pLDDT}_i = \sum_{b=1}^{50} p_i(b) v_b,$
 where $v_b$ is the bin centre (again 1, 3, 5 … 99).
 
-- **Ground truth:** 
-For every PDB training chain with resolution 0.1–3.0 Å (the high-quality subset), the lDDT-Cα of the final AlphaFold output against the experimental structure is computed and discretised into the same 50 bins.
+- **Ground truth:**
+  For every PDB training chain with resolution 0.1–3.0 Å (the high-quality subset), the lDDT-Cα of the final AlphaFold output against the experimental structure is computed and discretised into the same 50 bins.
 
 - **Loss:**
-A simple per-residue cross-entropy between the predicted distribution $p_i$ and the one-hot target vector $y_i$.
-The confidence loss is added to the main FAPE / torsion / distogram losses with its own weight.
-The cross-entropy between the one-hot target and the logits does back-propagate through the MLP into the
-single residue embedding and all weights below it (Structure-Module and Evoformer).
-Thus the network is encouraged to encode “how right am I likely to be?” in that embedding.
-
+  A simple per-residue cross-entropy between the predicted distribution $p_i$ and the one-hot target vector $y_i$.
+  The confidence loss is added to the main FAPE / torsion / distogram losses with its own weight.
+  The cross-entropy between the one-hot target and the logits does back-propagate through the MLP into the
+  single residue embedding and all weights below it (Structure-Module and Evoformer).
+  Thus the network is encouraged to encode “how right am I likely to be?” in that embedding.
 
 > Why it works so well
 
 - The single representation still encodes all the information that
-controlled the structure prediction—template alignment quality, MSA depth,
-invariant point attention activations, etc.—so the tiny head can learn a rich
-error model without ever “seeing” the experimental target during inference.
+  controlled the structure prediction—template alignment quality, MSA depth,
+  invariant point attention activations, etc.—so the tiny head can learn a rich
+  error model without ever “seeing” the experimental target during inference.
 
 ### Finetuning Phase
 
@@ -648,6 +648,7 @@ Fine‑tune re‑centres the model on physically plausible stereochemistry that 
       <td>Injects basic chemistry; catches illegal geometries not covered by FAPE.</td>
       <td>Only last ~50 k fine-tune steps; weight ≈ 0.3.</td>
     </tr>
+
   </tbody>
 </table>
 
@@ -735,5 +736,6 @@ Fine‑tune re‑centres the model on physically plausible stereochemistry that 
       <td>≈ ‑3.5</td>
       <td>Combining the two worst ablations collapses the model, confirming they are foundational.</td>
     </tr>
+
   </tbody>
 </table>
