@@ -1,0 +1,293 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title> Topic | Viacheslav Meshchaninov </title> <meta name="author" content="Viacheslav Meshchaninov"> <meta name="description" content="A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design. "> <meta name="keywords" content="jekyll, jekyll-theme, academic-website, portfolio-website"> <link rel="stylesheet" href="/assets/css/bootstrap.min.css?a4b3f509e79c54a512b890d73235ef04"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous"> <link defer rel="stylesheet" href="/assets/css/academicons.min.css?f0b7046b84e425c55f3463ac249818f5"> <link defer rel="stylesheet" href="/assets/css/scholar-icons.css?62b2ac103a88034e6882a5be5f3e2772"> <link defer rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons&amp;display=swap"> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-github.css?591dab5a4e56573bf4ef7fd332894c99" media="" id="highlight_theme_light"> <link rel="shortcut icon" href="data:image/svg+xml,&lt;svg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22&gt;&lt;text%20y=%22.9em%22%20font-size=%2290%22&gt;%F0%9F%9A%80&lt;/text&gt;&lt;/svg&gt;"> <link rel="stylesheet" href="/assets/css/main.css?d41d8cd98f00b204e9800998ecf8427e"> <link rel="canonical" href="https://meshchaninovviacheslav.github.io/notes/topic/"> <script src="/assets/js/theme.js?a81d82887dd692e91686b43de4542f18"></script> <link defer rel="stylesheet" href="/assets/css/jekyll-pygments-themes-native.css?5847e5ed4a4568527aa6cfab446049ca" media="none" id="highlight_theme_dark"> <script>
+    initTheme();
+  </script> <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> <link rel="preconnect" href="https://fonts.googleapis.com"> <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"> </head> <body class="fixed-top-nav "> <header> <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top py-3 py-md-4" role="navigation"> <div class="container"> <a class="navbar-brand title font-weight-bold" href="/" style="font-size: 1.125rem; letter-spacing: -0.025em;"> <span class="font-weight-bold">Viacheslav</span> Meshchaninov </a> <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar top-bar"></span> <span class="icon-bar middle-bar"></span> <span class="icon-bar bottom-bar"></span> </button> <div class="collapse navbar-collapse text-right" id="navbarNav"> <ul class="navbar-nav ml-auto flex-nowrap"> <li class="nav-item "> <a class="nav-link text-sm font-weight-medium ml-md-4 " href="/">about </a> </li> <li class="nav-item "> <a class="nav-link text-sm font-weight-medium ml-md-4 " href="/publications/">publications </a> </li> <li class="nav-item active"> <a class="nav-link text-sm font-weight-medium ml-md-4 text-primary" href="/notes/">notes <span class="sr-only">(current)</span> </a> </li> <li class="nav-item "> <a class="nav-link text-sm font-weight-medium ml-md-4 " href="/cv/">cv </a> </li> <li class="nav-item ml-md-4"> <button id="search-toggle" title="Search" onclick="openSearchModal()"> <span class="nav-link">ctrl k <i class="ti ti-search"></i></span> </button> </li> <li class="toggle-container ml-md-4"> <button id="light-toggle" title="Change theme"> <i class="ti ti-sun-moon" id="light-toggle-system"></i> <i class="ti ti-moon-filled" id="light-toggle-dark"></i> <i class="ti ti-sun-filled" id="light-toggle-light"></i> </button> </li> </ul> </div> </div> </nav> <progress id="progress" value="0"> <div class="progress-container"> <span class="progress-bar"></span> </div> </progress> </header> <div class="container mt-5" role="main"> <div class="post"> <header class="post-header"> <h1 class="post-title">Topic: <span id="topic-title-placeholder" class="text-capitalize"></span> </h1> <p class="post-description">A sorted list of notes filed under this topic.</p> </header> <article> <ul id="notes-list-container" class="list-unstyled"> </ul> </article> </div> <script>
+  // Manually build the notes array to avoid circular dependency issues with jsonify
+  const allNotes = [
+    
+      {
+        "url": "/notes/bio-informatics/protein%20generation/jumper2021highly/",
+        "path": "_notes/bio-informatics/protein generation/jumper2021highly.md",
+        "date": "2021-07-15T00:00:00.000+00:00",
+        "title": "Highly accurate protein structure prediction with AlphaFold",
+        "authors": null,
+        "year": null,
+        "link_pdf": "https://www.nature.com/articles/s41586-021-03819-2",
+        "code": null,
+        "tags": ["alphafold","proteins"]
+      },
+    
+      {
+        "url": "/notes/bio-informatics/protein%20structure%20generation/lin2023generating/",
+        "path": "_notes/bio-informatics/protein structure generation/lin2023generating.md",
+        "date": "2023-01-29T00:00:00.000+00:00",
+        "title": "Generating novel, designable, and diverse protein structures by equivariantly diffusing oriented residue clouds",
+        "authors": null,
+        "year": null,
+        "link_pdf": "https://arxiv.org/pdf/2301.12485",
+        "code": "https://github.com/aqlaboratory/genie",
+        "tags": ["3d","proteins","genie"]
+      },
+    
+      {
+        "url": "/notes/bio-informatics/protein%20structure%20generation/yim2023se/",
+        "path": "_notes/bio-informatics/protein structure generation/yim2023se.md",
+        "date": "2023-02-05T00:00:00.000+00:00",
+        "title": "SE (3) diffusion model with application to protein backbone generation",
+        "authors": null,
+        "year": null,
+        "link_pdf": "https://arxiv.org/pdf/2302.02277",
+        "code": "https://github.com/jasonkyuyim/se3_diffusion",
+        "tags": ["3d","proteins","framediff"]
+      },
+    
+      {
+        "url": "/notes/bio-informatics/protein%20structure%20generation/watson2023novo/",
+        "path": "_notes/bio-informatics/protein structure generation/watson2023novo.md",
+        "date": "2023-07-11T00:00:00.000+00:00",
+        "title": "De novo design of protein structure and function with RFdiffusion",
+        "authors": null,
+        "year": null,
+        "link_pdf": "https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-023-06415-8/MediaObjects/41586_2023_6415_MOESM1_ESM.pdf",
+        "code": "https://github.com/RosettaCommons/RFdiffusion",
+        "tags": ["3d","proteins","rfdiffusion"]
+      },
+    
+      {
+        "url": "/notes/bio-informatics/protein%20structure%20generation/yim2023fast/",
+        "path": "_notes/bio-informatics/protein structure generation/yim2023fast.md",
+        "date": "2023-07-11T00:00:00.000+00:00",
+        "title": "Fast protein backbone generation with se (3) flow matching",
+        "authors": null,
+        "year": null,
+        "link_pdf": "https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-023-06415-8/MediaObjects/41586_2023_6415_MOESM1_ESM.pdf",
+        "code": "https://github.com/RosettaCommons/RFdiffusion",
+        "tags": ["3d","proteins"]
+      },
+    
+      {
+        "url": "/notes/computer%20vision/diffusion%20distillation/yin2024one/",
+        "path": "_notes/computer vision/diffusion distillation/yin2024one.md",
+        "date": "2023-11-20T00:00:00.000+00:00",
+        "title": "One-step Diffusion with Distribution Matching Distillation",
+        "authors": null,
+        "year": null,
+        "link_pdf": "https://arxiv.org/pdf/2311.18828v4",
+        "code": "https://tianweiy.github.io/dmd/",
+        "tags": ["distillation","dmd"]
+      },
+    
+      {
+        "url": "/notes/bio-informatics/protein%20generation/campbell2024generative/",
+        "path": "_notes/bio-informatics/protein generation/campbell2024generative.md",
+        "date": "2024-02-07T00:00:00.000+00:00",
+        "title": "Generative flows on discrete state-spaces: Enabling multimodal flows with applications to protein co-design",
+        "authors": null,
+        "year": null,
+        "link_pdf": "https://arxiv.org/pdf/2402.04997",
+        "code": "https://github.com/jasonkyuyim/multiflow",
+        "tags": ["masked diffusion","proteins","cogeneration"]
+      },
+    
+      {
+        "url": "/notes/bio-informatics/protein%20generation/abramson2024accurate/",
+        "path": "_notes/bio-informatics/protein generation/abramson2024accurate.md",
+        "date": "2024-04-29T00:00:00.000+00:00",
+        "title": "Accurate structure prediction of biomolecular interactions with AlphaFold 3",
+        "authors": null,
+        "year": null,
+        "link_pdf": "https://www.nature.com/articles/s41586-024-07487-w",
+        "code": "https://github.com/google-deepmind/alphafold3",
+        "tags": ["alphafold","proteins","cogeneration"]
+      },
+    
+      {
+        "url": "/notes/computer%20vision/diffusion%20distillation/yin2024improved/",
+        "path": "_notes/computer vision/diffusion distillation/yin2024improved.md",
+        "date": "2024-05-24T00:00:00.000+00:00",
+        "title": "Improved distribution matching distillation for fast image synthesis",
+        "authors": null,
+        "year": null,
+        "link_pdf": "https://arxiv.org/pdf/2405.14867",
+        "code": "https://github.com/tianweiy/DMD2",
+        "tags": ["distillation","dmd"]
+      },
+    
+      {
+        "url": "/notes/computer%20vision/diffusion%20distillation/rakitin2024regularized/",
+        "path": "_notes/computer vision/diffusion distillation/rakitin2024regularized.md",
+        "date": "2024-06-20T00:00:00.000+00:00",
+        "title": "Regularized Distribution Matching Distillation for One-step Unpaired Image-to-Image Translation",
+        "authors": null,
+        "year": null,
+        "link_pdf": "https://arxiv.org/pdf/2406.14762",
+        "code": "https://github.com/tianweiy/DMD2",
+        "tags": ["distillation","i2i"]
+      },
+    
+      {
+        "url": "/notes/bio-informatics/protein%20generation/hayes2025simulating/",
+        "path": "_notes/bio-informatics/protein generation/hayes2025simulating.md",
+        "date": "2024-07-02T00:00:00.000+00:00",
+        "title": "Simulating 500 million years of evolution with a language model",
+        "authors": null,
+        "year": null,
+        "link_pdf": "https://www.biorxiv.org/content/10.1101/2024.07.01.600583v1.full.pdf",
+        "code": "https://github.com/evolutionaryscale/esm",
+        "tags": ["masked diffusion","esm3","proteins","cogeneration"]
+      },
+    
+      {
+        "url": "/notes/generative%20models/diffusion%20models/bortoli2022riemannian/",
+        "path": "_notes/generative models/diffusion models/bortoli2022riemannian.md",
+        "date": "2024-07-02T00:00:00.000+00:00",
+        "title": "Riemannian Score-Based Generative Modelling",
+        "authors": null,
+        "year": null,
+        "link_pdf": "https://arxiv.org/pdf/2202.02763",
+        "code": "https://github.com/oxcsml/riemannian-score-sde",
+        "tags": ["Riemannian manifolds"]
+      },
+    
+      {
+        "url": "/notes/bio-informatics/structural%20ensembles/lisanza2024multistate/",
+        "path": "_notes/bio-informatics/structural ensembles/lisanza2024multistate.md",
+        "date": "2024-09-25T00:00:00.000+00:00",
+        "title": "Multistate and functional protein design using RoseTTAFold sequence space diffusion",
+        "authors": null,
+        "year": null,
+        "link_pdf": "https://www.nature.com/articles/s41587-024-02395-w.pdf",
+        "code": "https://github.com/RosettaCommons/protein_generator",
+        "tags": ["ensembles","ProteinGenerator"]
+      },
+    
+      {
+        "url": "/notes/bio-informatics/structural%20ensembles/lewis2024scalable/",
+        "path": "_notes/bio-informatics/structural ensembles/lewis2024scalable.md",
+        "date": "2024-12-05T00:00:00.000+00:00",
+        "title": "Scalable emulation of protein equilibrium ensembles with generative deep learning",
+        "authors": null,
+        "year": null,
+        "link_pdf": "https://www.biorxiv.org/content/10.1101/2024.12.05.626885v2.full.pdf",
+        "code": "https://github.com/microsoft/bioemu",
+        "tags": ["ensembles","proteins"]
+      },
+    
+      {
+        "url": "/notes/generative%20models/diffusion%20models/ma2025inference/",
+        "path": "_notes/generative models/diffusion models/ma2025inference.md",
+        "date": "2025-01-16T00:00:00.000+00:00",
+        "title": "Inference-time scaling for diffusion models beyond scaling denoising steps",
+        "authors": null,
+        "year": null,
+        "link_pdf": "https://arxiv.org/pdf/2501.09732",
+        "code": "",
+        "tags": ["tts","diffusion"]
+      },
+    
+      {
+        "url": "/notes/natural%20language%20processing/text%20diffusion%20generation/jo2025continuous/",
+        "path": "_notes/natural language processing/text diffusion generation/jo2025continuous.md",
+        "date": "2025-02-17T00:00:00.000+00:00",
+        "title": "Continuous Diffusion Model for Language Modeling",
+        "authors": null,
+        "year": null,
+        "link_pdf": "https://arxiv.org/pdf/2502.11564",
+        "code": "https://github.com/harryjo97/RDLM",
+        "tags": ["text-diffusion","rdlm"]
+      },
+    
+      {
+        "url": "/notes/bio-informatics/structural%20ensembles/lu2025aligning/",
+        "path": "_notes/bio-informatics/structural ensembles/lu2025aligning.md",
+        "date": "2025-05-30T00:00:00.000+00:00",
+        "title": "Aligning Protein Conformation Ensemble Generation with Physical Feedback",
+        "authors": null,
+        "year": null,
+        "link_pdf": "https://www.nature.com/articles/s41587-024-02395-w.pdf",
+        "code": "https://github.com/bytedance/apm",
+        "tags": ["ensembles","APM"]
+      },
+    
+      {
+        "url": "/notes/bio-informatics/protein%20generation/chen2025all/",
+        "path": "_notes/bio-informatics/protein generation/chen2025all.md",
+        "date": "2025-05-31T00:00:00.000+00:00",
+        "title": "An All-Atom Generative Model for Designing Protein Complexes",
+        "authors": null,
+        "year": null,
+        "link_pdf": "https://www.nature.com/articles/s41587-024-02395-w.pdf",
+        "code": "https://github.com/bytedance/apm",
+        "tags": ["ensembles","APM"]
+      }
+    
+  ];
+
+  // Get the topic name from the URL query parameter
+  const urlParams = new URLSearchParams(window.location.search);
+  const topicName = urlParams.get('name');
+
+  // Update the page title
+  if (topicName) {
+    const titlePlaceholder = document.getElementById('topic-title-placeholder');
+    titlePlaceholder.textContent = topicName.replace(/-/g, ' ');
+    document.title = "Topic: " + topicName;
+  }
+
+  // Find the container where notes will be displayed
+  const notesContainer = document.getElementById('notes-list-container');
+
+  // Filter notes that match the current topic
+  const filteredNotes = allNotes.filter(note => {
+    const pathParts = note.path.split('/');
+    return pathParts.length > 2 && pathParts[2] === topicName;
+  });
+
+  // Sort notes by date in ascending order. Fallback to year if date is not available.
+  filteredNotes.sort((a, b) => {
+    const dateA = new Date(a.date || a.year);
+    const dateB = new Date(b.date || b.year);
+    if (isNaN(dateA.getTime())) return 1;
+    if (isNaN(dateB.getTime())) return -1;
+    return dateA - dateB;
+  });
+
+  // Generate and inject the HTML for each note
+  if (filteredNotes.length > 0) {
+    filteredNotes.forEach(note => {
+      let authorsHtml = '';
+      if (note.authors && note.authors.length > 0) {
+        authorsHtml = `<div class="text-muted">by ${note.authors.join(', ')}</div>`;
+      }
+
+      let dateHtml = '';
+      if (note.date) {
+        const dateObj = new Date(note.date);
+        if (!isNaN(dateObj.getTime())) {
+          dateHtml = `<div class="text-muted">${dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</div>`;
+        }
+      } else if (note.year) {
+        dateHtml = `<div class="text-muted">${note.year}</div>`;
+      }
+
+      let tagsHtml = '';
+      if (note.tags && note.tags.length > 0) {
+        const tags = note.tags.map(tag => `<a href="/notes-by-tag/?tag=${encodeURIComponent(tag)}" class="badge badge-secondary">${tag}</a>`).join(' ');
+        tagsHtml = `<div class="tags mt-2">${tags}</div>`;
+      }
+
+      const noteListItem = `
+        <li class="mb-4">
+          <h5 class="mb-1"><a href="${note.url}">${note.title}</a></h5>
+          ${authorsHtml}
+          ${dateHtml}
+          ${tagsHtml}
+        </li>
+      `;
+      notesContainer.innerHTML += noteListItem;
+    });
+  } else {
+    notesContainer.innerHTML = "<li><p>No notes found for this topic.</p></li>";
+  }
+</script> </div> <footer class="fixed-bottom" role="contentinfo"> <div class="container mt-0"> © Copyright 2025 Viacheslav Meshchaninov. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="external nofollow noopener">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" rel="external nofollow noopener" target="_blank">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="external nofollow noopener">GitHub Pages</a>. Photos from <a href="https://unsplash.com" target="_blank" rel="external nofollow noopener">Unsplash</a>. Last updated: July 20, 2025. </div> </footer> <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> <script src="/assets/js/bootstrap.bundle.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script> <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@5.0.0/imagesloaded.pkgd.min.js" integrity="sha256-htrLFfZJ6v5udOG+3kNLINIKh2gvoKqwEhHYfTTMICc=" crossorigin="anonymous"></script> <script defer src="/assets/js/masonry.js?a0db7e5d5c70cc3252b3138b0c91dcaf" type="text/javascript"></script> <script defer src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous"></script> <script defer src="/assets/js/zoom.js?85ddb88934d28b74e78031fd54cf8308"></script> <script src="/assets/js/no_defer.js?2781658a0a2b13ed609542042a859126"></script> <script defer src="/assets/js/common.js?e0514a05c5c95ac1a93a8dfd5249b92e"></script> <script defer src="/assets/js/copy_code.js?c8a01c11a92744d44b093fc3bda915df" type="text/javascript"></script> <script defer src="/assets/js/jupyter_new_tab.js?d9f17b6adc2311cbabd747f4538bb15f"></script> <script async src="https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js"></script> <script async src="https://badge.dimensions.ai/badge.js"></script> <script src="/assets/js/mathjax-setup.js?a5bb4e6a542c546dd929b24b8b236dfd"></script> <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js" integrity="sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI=" crossorigin="anonymous"></script> <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6" crossorigin="anonymous"></script> <script defer src="/assets/js/progress-bar.js?2f30e0e6801ea8f5036fa66e1ab0a71a" type="text/javascript"></script> <script src="/assets/js/vanilla-back-to-top.min.js?f40d453793ff4f64e238e420181a1d17"></script> <script>
+    addBackToTop();
+  </script> <script type="module" src="/assets/js/search/ninja-keys.min.js?a3446f084dcaecc5f75aa1757d087dcf"></script> <ninja-keys hidebreadcrumbs noautoloadmdicons placeholder="Type to start searching"></ninja-keys> <script src="/assets/js/search-setup.js?6c304f7b1992d4b60f7a07956e52f04a"></script> <script src="/assets/js/search-data.js"></script> <script src="/assets/js/shortcut-key.js?6f508d74becd347268a7f822bca7309d"></script> </body> </html>
