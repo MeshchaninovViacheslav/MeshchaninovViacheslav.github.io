@@ -2,8 +2,10 @@ name: Lighthouse Badger (disabled)
 
 on:
   workflow_dispatch:
-    inputs:
-      reason:
-        description: 'Manual trigger'
-        required: false
-        default: 'This workflow is disabled'
+
+jobs:
+  do_nothing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Do nothing
+        run: echo "This workflow is disabled and does nothing."
