@@ -1,97 +1,108 @@
-- title: General Information
-  type: map
-  contents:
-    - name: Full Name
-      value: Albert Einstein
-    - name: Date of Birth
-      value: 14th March 1879
-    - name: Languages
-      value: English, German
-
 - title: Education
   type: time_table
   contents:
-    - title: PhD
-      institution: University of Zurich, Zurich, Switzerland
-      year: 1905
+    - title: PhD in Computer Science
+      institution: Constructor University, Bremen, Germany
+      year: Now
       description:
-        - Description 1.
-        - Description 2.
-        - title: Description 3.
-          contents:
-            - Sub-description 1.
-            - Sub-description 2.
-    - title: Federal teaching diploma
-      institution: Eidgenössische Technische Hochschule, Zurich, Switzerland
-      year: 1900
+        - Unleashing the Power of Diffusion Model for Efficient Generation of Discrete Data with Variable Length
+    - title: Master's in Computer Science
+      institution: Lomonosov Moscow State University, Moscow, Russia
+      year: 2024
       description:
-        - Description 1.
-        - Description 2.
+        - Application of diffusion models to generation of amino acid sequences
+    - title: Foundational courses for master's degree in Computer Science
+      institution: Yandex School of Data Analysis, Moscow, Russia
+      year: 2022
+      description:
+        - Machine learning developer
+    - title: Bachelor's in Computer Science
+      institution: Lomonosov Moscow State University, Moscow, Russia
+      year: 2022
+      description:
+        - Development of neural network method for detecting videos of increased resolution
 
 - title: Experience
   type: time_table
   contents:
-    - title: Professor of Theoretical Physics
-      institution: Institute for Advanced Study, Princeton University
-      year: 1933 - 1955
+    - title: Researcher
+      institution: Centre of Deep Learning and Bayesian Methods
+      year: 2022 – Now
       description:
-        - Description 1.
-        - Description 2.
-        - title: Description 3.
-          contents:
-            - Sub-description 1.
-            - Sub-description 2.
-    - title: Visiting Professor
-      institution: California Institute of Technology, Pasadena, California, US
-      year: 1933
+        - Research the applications of diffusion models for text and protein generation.
+
+    - title: Researcher/Developer
+      institution: Graphics and Media Lab
+      year: 2020 – 2022
       description:
-        - Description 1.
-        - Description 2.
+        - Research of Super-Resolution methods for image and video upscaling.
+        - Developing the method of detection of artificially upscaled videos.
 
-    - title: Director
-      institution: Kaiser Wilhelm Institute for Physics, Berlin, Germany.
-      year: 1917-1933
-
-    - title: Professor of Theoretical Physics
-      institution: Karl-Ferdinand University, Prague, Czechoslovakia
-      year: 1911 - 1917
+    - title: Machine Learning Intern
+      institution: Yandex Alice
+      year: SUMMER 2021
       description:
+        - Developed the quality metrics for estimation of Alice's user satisfaction.
+        - Created a tool for identification of errors in the work of Alice voice assistant.
 
-    - title: Associate Professor of Theoretical Physics
-      institution: University of Zurich, Zurich, Switzerland
-      year: 1909 - 1911
+    - title: Software Engineering Intern
+      institution: Intel
+      year: SUMMER 2020
+      description:
+        - Developed a tool for analysis and comparison of full-reference neural network metrics of video quality.
 
-- title: Open Source Projects
-  type: time_table
-  contents:
-    - title: <a href="https://github.com/alshedivat/al-folio">al-folio</a>
-      year: 2015-now
-      description: A beautiful, simple, clean, and responsive Jekyll theme for academics.
 
 - title: Honors and Awards
   type: time_table
   contents:
-    - year: 1921
+    - year: 2024
       items:
-        - Nobel Prize in Physics
-        - Matteucci Medal
-    - year: 2029
+        - Excellent Graduate, Moscow State University
+    - year: 2023
       items:
-        - Max Planck Medal
+        - Winner of the Young Teachers Competition, HSE University
+    - year: 2022
+      items:
+        - Winner of the “Lomonosov” Olympiad in Mathematics and Cybernetics
+    - year: 2021
+      items:
+        - Awarded the UMNIK Research Grant for innovative scientific development
 
-- title: Academic Interests
-  type: nested_list
+- title: Teaching
+  type: time_table
   contents:
-    - title: Topic 1.
+    - title: Lecturing
+      year: 2023
       items:
-        - Description 1.
-        - Description 2.
-    - title: Topic 2.
+        - Bayesian Methods in Machine Learning at the faculty of Computer Science HSE University
+        - Natural Language Processing at the faculty of Computer Science HSE University
+    
+    - title: Teaching assistance
+      year: 2023
       items:
-        - Description 1.
-        - Description 2.
+        - Neural Bayesian Methods at Yandex School of Data Analysis
+        - Neural Bayesian Methods at CMC MSU
+        - Bayesian Methods in Machine Learning at the faculty of Computer Science HSE University
 
-- title: Other Interests
-  type: list
-  contents:
-    - <u>Hobbies:</u> Hobby 1, Hobby 2, etc.
+    - title: Teaching assistance
+      year: 2022
+      items:
+        - Bayesian Methods in Machine Learning at Yandex School of Data Analysis
+        - Bayesian Methods in Machine Learning at CMC MSU
+
+# - title: Academic Interests
+#   type: nested_list
+#   contents:
+#     - title: Topic 1.
+#       items:
+#         - Description 1.
+#         - Description 2.
+#     - title: Topic 2.
+#       items:
+#         - Description 1.
+#         - Description 2.
+
+# - title: Other Interests
+#   type: list
+#   contents:
+#     - <u>Hobbies:</u> Hobby 1, Hobby 2, etc.
