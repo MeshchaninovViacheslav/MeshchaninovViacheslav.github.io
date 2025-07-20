@@ -25,10 +25,11 @@ layout: default
         "path": {{ note.path | jsonify }},
         "date": {{ note.date | jsonify }},
         "title": {{ note.entry.title | default: note.title | jsonify }},
-        "authors": {{ note.entry.author_raw | jsonify }},
+        "authors": {{ note.entry.author | jsonify }},
         "year": {{ note.entry.year | jsonify }},
         "link_pdf": {{ note.link_pdf | jsonify }},
-        "code": {{ note.code | jsonify }}
+        "code": {{ note.code | jsonify }},
+        "tags": {{ note.tags | jsonify }}
       }{% unless forloop.last %},{% endunless %}
     {% endfor %}
   ];
@@ -80,11 +81,18 @@ layout: default
         dateHtml = `<div class="text-muted">${note.year}</div>`;
       }
 
+      let tagsHtml = '';
+      if (note.tags && note.tags.length > 0) {
+        const tags = note.tags.map(tag => `<a href="/notes-by-tag/?tag=${encodeURIComponent(tag)}" class="badge badge-secondary">${tag}</a>`).join(' ');
+        tagsHtml = `<div class="tags mt-2">${tags}</div>`;
+      }
+
       const noteListItem = `
         <li class="mb-4">
           <h5 class="mb-1"><a href="${note.url}">${note.title}</a></h5>
           ${authorsHtml}
           ${dateHtml}
+          ${tagsHtml}
         </li>
       `;
       notesContainer.innerHTML += noteListItem;

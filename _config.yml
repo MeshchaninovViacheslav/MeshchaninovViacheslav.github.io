@@ -145,6 +145,7 @@ collections:
     output: true
     defaults:
       layout: note
+      toc: true
 
 # -----------------------------------------------------------------------------
 # Jekyll settings
@@ -155,6 +156,7 @@ markdown: kramdown
 highlighter: rouge
 kramdown:
   input: GFM
+  auto_ids: true
   syntax_highlighter_opts:
     css_class: "highlight"
     span:
@@ -205,7 +207,6 @@ plugins:
   - jekyll-sitemap
   - jekyll-tabs
   - jekyll-terser
-  - jekyll-toc
   - jekyll-twitter-plugin
   - jemoji
 
