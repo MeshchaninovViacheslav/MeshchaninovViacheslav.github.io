@@ -21,20 +21,6 @@ jobs:
         with:
           ruby-version: "3.3.5"
           bundler-cache: true
-      - name: Update _config.yml ⚙️
-        uses: fjogeleit/yaml-update-action@main
-        with:
-          commitChange: false
-          valueFile: "_config.yml"
-          changes: |
-            {
-              "giscus.repo": "${{ github.repository }}",
-              "url": "https://meshchaninovviacheslav.github.io",
-              "baseurl": ""
-            }
-      - name: Install and Build 🔧
-        run: |
-          bundle install
       - name: Install deps
         run: |
           npm install -g mermaid.cli
