@@ -29,6 +29,7 @@ horizontal: false
 
 {% if notes_with_topics.size > 0 %}
 {% assign topics = notes_with_topics | group_by_exp: "item", "item.path | split: '/' | slice: 2, 1 | join: ''" %}
+
 <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
 {% for topic in topics %}
 {% include topic_card.liquid topic=topic %}
