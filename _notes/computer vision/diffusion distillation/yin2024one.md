@@ -22,7 +22,7 @@ bibtex: |-
 In essence, the motivation is to create one-step image generators that can achieve quality comparable to costly multi-step diffusion models while being orders of magnitude faster. DMD achieves this by introducing a distribution matching objective, bolstered by a regression loss, to efficiently distill knowledge from powerful diffusion models. The method aims to close the fidelity gap between distilled and base models while enabling 100x reduction in neural network evaluations and generating 512x512 images at 20 FPS.
 
 ## Methodology
-
+---
 ![folding]({{ "assets/notes-img/computer vision/diffusion distillation/yin2024one/12.png" | relative_url }}){:width="800px" .img-frame-black}
 
 > Notation
@@ -85,6 +85,16 @@ where $S$ is the number of spatial locations and $C$ is the number of channels.
 
 The authors set $T_{\min} = 0.02T$ and $T_{\max} = 0.98T$, following DreamFusion.
 
+> Torch computation of DMD loss
+
+In order to get given gradient we could use the follwoing loss:
+
+$L = \bigg( x - \big\[x - (s_{\text{fake}}(x_t, t) - s_{\text{real}}(x_t, t))\big\]\text{.detach()} \bigg)^2$
+
+Then the gradient of $L$ will be exactly that we need:
+
+$\nabla_{\theta} L = 2 \cdot (s_{\text{fake}}(x_t, t) - s_{\text{real}}(x_t, t)) \cdot \nabla_{\theta} x, \text{  where  } x = G_{\theta}(z)$
+
 > Regression loss
 
 The distribution matching objective is well-defined for $t \gg 0$, i.e., when the generated samples are corrupted with a large amount of noise. 
@@ -103,6 +113,28 @@ Network $\mu_{\text{fake}}^{\phi}$ is trained with $$\mathcal{L}^{\phi}_{\text{d
 For training $G_\theta$, the final objective is:
 $$D_{KL} + \lambda_{\text{reg}} \mathcal{L}_{\text{reg}}, \quad \text{with} \quad \lambda_{\text{reg}} = 0.25$$ unless otherwise specified.
 
+## Implementation Details
 
+$$
+\begin{align}
+    & z \sim \mathcal{N}(0; \mathbf{I}) \\
+    & \varepsilon_{\theta} = G(z, t_{\text{gen}}), t_{\text{gen}} \text{ is a timestep that we feed into a generator} \\
+    & x_{\theta} = \frac{z - \sigma_{t_{\text{gen}}} \varepsilon_{\theta} }{\alpha_{t_{\text{gen}}}} \\ 
+    & S_{\text{fake}}\text{.requires_grad_(False)} \\
+    & \\
+    & \text{with torch.no_grad():} \\
+    & \qquad t \sim U[t_{\text{min}};t_{\text{max}}] \\
+    & \qquad \epsilon \sim \mathcal{N}(0; \mathbf{I}) \\
+    & \qquad x_t = \alpha_t x_{\theta} + \sigma_t \epsilon \\
+    & \qquad x_0^{\text{fake}} = S_{\text{fake}} (x_t, t) \\
+    & \qquad x_0^{\text{real}} = S_{\text{real}} (x_t, t) \\
+    & \qquad p_{\text{fake}} = x_{\theta} - x_0^{\text{fake}} \\
+    & \qquad p_{\text{real}} = x_{\theta} - x_0^{\text{real}} \\
+    & \qquad \text{grad} = \frac{p_{\text{real}} - p_{\text{fake}}}{|p_{\text{real}}|} \\
+    & \qquad \text{grad} = \text{torch.nan_to_num(grad)} \\
+    & \\
+    & L_{\text{dmd}} = 0.5 \cdot \bigg(x_{\theta} - (x_{\theta} - \text{grad})\text{.detach()} \bigg)^2 \\
+\end{align}
+$$
 
 

@@ -33,7 +33,7 @@ Naively omitting the regression objective from DMD leads to training instabiliti
 The authors attribute this instability to approximation errors in the fake diffusion model, which does not track the fake score accurately, since it is dynamically optimized on the non-stationary output distribution of the generator.
 
 This is addressed by using different update frequencies for the generator and the fake score model.
-They find that using 5 fake score updates per generator update, without the regression loss, provides good stability and matches the quality of the original DMD.
+The authors find that using 5 fake score updates per generator update, without the regression loss, provides good stability and matches the quality of the original DMD.
 
 > Surpassing the teacher model using a GAN loss and real data
 
