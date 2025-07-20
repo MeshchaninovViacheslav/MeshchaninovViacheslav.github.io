@@ -71,7 +71,7 @@ This motivated them to extend DMD to support multi-step sampling.
 
 <br>
 Previous multi-step generators are typically trained to denoise noisy real images. 
-However, during inference, except for the first step, which starts from pure noise, the generator's input comes from a previous generator sampling step $\hat{x}_{t_i}$. 
+However, during inference, except for the first step, which starts from pure noise, the generator's input comes from a previous generator sampling step $\hat{x}_{t_i}$.
 
 This creates a training-inference mismatch that adversely impacts quality.
 
