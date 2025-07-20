@@ -52,10 +52,10 @@ layout: default
   <div class="post-content mt-4">
     <div id="toc-container" class="toc-frame p-3 mb-4 rounded" style="background-color: #f8f9fa;">
       <h4 class="toc-title">On this page</h4>
-      {% include toc.html html=content %}
+      {% toc %}
     </div>
 
-    {{ content }}
+    {{ content | inject_anchors }}
 
     {% if page.bibtex %}
       <div class="bibtex-toggle">
