@@ -92,6 +92,9 @@ git checkout -b $DEPLOY_BRANCH
 # Export JEKYLL_ENV=production
 export JEKYLL_ENV=production
 
+# Install dependencies
+apt-get update && apt-get install -y imagemagick
+
 # Build site
 bundle exec jekyll build
 
