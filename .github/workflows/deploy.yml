@@ -24,6 +24,10 @@ jobs:
       - name: Install and Build 🔧
         run: |
           bundle install
+          export JEKYLL_ENV=production
+          bundle exec jekyll build
+      - name: Upload artifact ⬆️
+        uses: actions/upload-pages-artifact@v3
       - name: Install deps
         run: |
           npm install -g mermaid.cli
